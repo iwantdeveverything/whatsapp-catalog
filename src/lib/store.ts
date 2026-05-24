@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { DEFAULT_THEME } from "@/lib/themes/types";
 
 interface CatalogState {
   searchQuery: string;
@@ -9,12 +11,47 @@ interface CatalogState {
   toggleMobileMenu: () => void;
 }
 
-export const useCatalogStore = create<CatalogState>((set) => ({
-  searchQuery: "",
-  activeCategory: null,
-  isMobileMenuOpen: false,
-  setSearchQuery: (query) => set({ searchQuery: query }),
-  setActiveCategory: (category) => set({ activeCategory: category }),
-  toggleMobileMenu: () =>
-    set((state) => ({ isMobileMenuOpen: !state.isMobileMenuOpen })),
-}));
+interface ThemeState {
+  currentTheme: string;
+  setTheme: (themeId: string) => void;
+  resetToDefault: () => void;
+}
+
+type AppState = CatalogState & ThemeState;
+
+export const useCatalogStore = create<AppState>()(
+  persist(
+    (set) => ({
+      // ── Catalog slice ──
+      searchQuery: "",
+      activeCategory: null,
+      isMobileMenuOpen: false,
+      setSearchQuery: (query) => set({ searchQuery: query }),
+      setActiveCategory: (category) => set({ activeCategory: category }),
+      toggleMobileMenu: () =>
+        set((state) => ({ isMobileMenuOpen: !state.isMobileMenuOpen })),
+
+      // ── Theme slice ──
+      currentTheme: DEFAULT_THEME,
+      setTheme: (themeId) => {
+        set({ currentTheme: themeId });
+        // Side-effect: sync theme cookie for SSR middleware
+        if (typeof document !== "undefined") {
+          document.cookie = `theme=${themeId}; path=/; max-age=31536000; SameSite=Lax`;
+        }
+      },
+      resetToDefault: () => {
+        set({ currentTheme: DEFAULT_THEME });
+        if (typeof document !== "undefined") {
+          document.cookie = `theme=${DEFAULT_THEME}; path=/; max-age=31536000; SameSite=Lax`;
+        }
+      },
+    }),
+    {
+      name: "whatsapp-catalog-store",
+      partialize: (state) => ({
+        currentTheme: state.currentTheme,
+      }),
+    },
+  ),
+);

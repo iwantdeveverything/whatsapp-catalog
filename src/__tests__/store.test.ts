@@ -73,3 +73,35 @@ describe("useCatalogStore", () => {
     expect(useCatalogStore.getState().isMobileMenuOpen).toBe(true);
   });
 });
+
+// ── Theme slice ──
+
+describe("useCatalogStore — theme slice", () => {
+  beforeEach(() => {
+    useCatalogStore.getState().resetToDefault();
+  });
+
+  it("defaults currentTheme to 'shopify'", () => {
+    expect(useCatalogStore.getState().currentTheme).toBe("shopify");
+  });
+
+  it("setTheme changes currentTheme", () => {
+    useCatalogStore.getState().setTheme("figma");
+    expect(useCatalogStore.getState().currentTheme).toBe("figma");
+  });
+
+  it("resetToDefault restores 'shopify'", () => {
+    useCatalogStore.getState().setTheme("linear");
+    useCatalogStore.getState().resetToDefault();
+    expect(useCatalogStore.getState().currentTheme).toBe("shopify");
+  });
+
+  it("accepts multiple consecutive setTheme calls", () => {
+    useCatalogStore.getState().setTheme("stripe");
+    expect(useCatalogStore.getState().currentTheme).toBe("stripe");
+    useCatalogStore.getState().setTheme("apple");
+    expect(useCatalogStore.getState().currentTheme).toBe("apple");
+    useCatalogStore.getState().setTheme("shopify");
+    expect(useCatalogStore.getState().currentTheme).toBe("shopify");
+  });
+});
