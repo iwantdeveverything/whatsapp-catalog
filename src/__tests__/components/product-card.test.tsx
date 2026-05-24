@@ -1,0 +1,112 @@
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { ProductCard } from "@/components/product-card";
+import type { Product } from "@/lib/schemas";
+
+// Mock next/image — render as plain <img> in test environment
+vi.mock("next/image", () => ({
+  default: ({ src, alt, ...rest }: Record<string, unknown>) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src as string} alt={alt as string} {...rest} />
+  ),
+}));
+
+// Mock next/link — render as plain <a>
+vi.mock("next/link", () => ({
+  default: ({
+    children,
+    href,
+    ...rest
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => (
+    <a href={href} {...rest}>
+      {children}
+    </a>
+  ),
+}));
+
+function createProduct(overrides: Partial<Product> = {}): Product {
+  return {
+    id: "test-product",
+    name: "Test Product",
+    description: "A test product for unit tests",
+    price: 10000,
+    images: ["https://example.com/photo.jpg"],
+    category: "Test",
+    isActive: true,
+    ...overrides,
+  };
+}
+
+describe("ProductCard", () => {
+  // --- Basic rendering ---
+
+  it("renders the product name", () => {
+    const product = createProduct({ name: "Zapatillas Running" });
+    render(<ProductCard product={product} />);
+    expect(screen.getByText("Zapatillas Running")).toBeInTheDocument();
+  });
+
+  it("renders the product price formatted with thousands separator", () => {
+    const product = createProduct({ price: 85000 });
+    render(<ProductCard product={product} />);
+    expect(screen.getByText("$85.000")).toBeInTheDocument();
+  });
+
+  it('renders "Consultar" when price is "Consultar"', () => {
+    const product = createProduct({ price: "Consultar" as const });
+    render(<ProductCard product={product} />);
+    expect(screen.getByText("Consultar")).toBeInTheDocument();
+  });
+
+  it("renders the category badge", () => {
+    const product = createProduct({ category: "Calzado" });
+    render(<ProductCard product={product} />);
+    expect(screen.getByText("Calzado")).toBeInTheDocument();
+  });
+
+  // --- Link behavior ---
+
+  it("wraps the card in a link to the product detail page", () => {
+    const product = createProduct({ id: "zapatillas-running" });
+    render(<ProductCard product={product} />);
+    const link = screen.getByRole("link");
+    expect(link).toHaveAttribute("href", "/zapatillas-running");
+  });
+
+  it("link includes the product id in the href", () => {
+    const product = createProduct({ id: "mochila-viajera" });
+    render(<ProductCard product={product} />);
+    const link = screen.getByRole("link");
+    expect(link).toHaveAttribute("href", "/mochila-viajera");
+  });
+
+  // --- Image ---
+
+  it("renders the product image with correct src and alt text", () => {
+    const product = createProduct({
+      images: ["https://example.com/zapas.jpg"],
+      name: "Zapatillas",
+    });
+    render(<ProductCard product={product} />);
+    const img = screen.getByRole("img");
+    expect(img).toHaveAttribute("src", "https://example.com/zapas.jpg");
+    expect(img).toHaveAttribute("alt", "Zapatillas");
+  });
+
+  // --- Price edge cases ---
+
+  it("formats small prices correctly", () => {
+    const product = createProduct({ price: 9500 });
+    render(<ProductCard product={product} />);
+    expect(screen.getByText("$9.500")).toBeInTheDocument();
+  });
+
+  it("formats prices with six digits correctly", () => {
+    const product = createProduct({ price: 120000 });
+    render(<ProductCard product={product} />);
+    expect(screen.getByText("$120.000")).toBeInTheDocument();
+  });
+});
