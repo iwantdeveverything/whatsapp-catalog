@@ -17,7 +17,6 @@ function createProduct(overrides: Partial<Product> = {}): Product {
 }
 
 describe("WhatsAppCta", () => {
-
   // --- Basic rendering ---
 
   it('renders a "Consultar por WhatsApp" button', () => {

@@ -19,7 +19,11 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
   };
 
   return (
-    <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
+    <div
+      className="flex flex-wrap gap-2"
+      role="group"
+      aria-label="Filtrar por categoría"
+    >
       <button
         type="button"
         aria-pressed={activeCategory === null}

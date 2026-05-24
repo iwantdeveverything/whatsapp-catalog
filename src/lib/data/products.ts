@@ -23,9 +23,7 @@ const rawProducts = [
     description:
       "Zapatos de cuero legítimo cosidos a mano. Suela de goma natural. Disponibles en negro y marrón.",
     price: 120000,
-    images: [
-      "https://placehold.co/800x800/2d2d44/ffffff?text=Zapatos+Cuero",
-    ],
+    images: ["https://placehold.co/800x800/2d2d44/ffffff?text=Zapatos+Cuero"],
     category: "Calzado",
     contact: {
       whatsapp: "5491112345678",
@@ -38,9 +36,7 @@ const rawProducts = [
     description:
       "Camisa Oxford de algodón egipcio, corte slim fit. Cuello con botones ocultos. Planchado permanente.",
     price: 45000,
-    images: [
-      "https://placehold.co/800x800/3a3a5c/ffffff?text=Camisa+Oxford",
-    ],
+    images: ["https://placehold.co/800x800/3a3a5c/ffffff?text=Camisa+Oxford"],
     category: "Ropa",
     contact: {
       whatsapp: "5491112345678",
@@ -54,9 +50,7 @@ const rawProducts = [
     description:
       "Remera de algodón peinado 30/1, tratamiento anti-pilling. Cuello rib acanalado, costura reforzada.",
     price: 18000,
-    images: [
-      "https://placehold.co/800x800/4a4a6e/ffffff?text=Remera+Algodon",
-    ],
+    images: ["https://placehold.co/800x800/4a4a6e/ffffff?text=Remera+Algodon"],
     category: "Ropa",
     contact: {
       phone: "+541112345678",
@@ -69,9 +63,7 @@ const rawProducts = [
     description:
       "Mochila impermeable 40 litros con compartimento laptop acolchado, bolsillos organizadores y espalda transpirable.",
     price: 32000,
-    images: [
-      "https://placehold.co/800x800/5a5a80/ffffff?text=Mochila+Viajera",
-    ],
+    images: ["https://placehold.co/800x800/5a5a80/ffffff?text=Mochila+Viajera"],
     category: "Accesorios",
     contact: {
       whatsapp: "5491112345678",
@@ -84,9 +76,7 @@ const rawProducts = [
     description:
       "Gorro tejido en lana merino con forro polar interior. Doble capa, ajuste universal.",
     price: 9500,
-    images: [
-      "https://placehold.co/800x800/6a6a92/ffffff?text=Gorro+Invierno",
-    ],
+    images: ["https://placehold.co/800x800/6a6a92/ffffff?text=Gorro+Invierno"],
     category: "Accesorios",
     contact: {
       whatsapp: "5491112345678",
@@ -99,9 +89,7 @@ const rawProducts = [
     description:
       "Diseño gráfico a medida: logos, branding, packaging. 3 revisiones incluidas. Entrega en 5 días hábiles.",
     price: "Consultar" as const,
-    images: [
-      "https://placehold.co/800x800/7a7aa4/ffffff?text=Disenio",
-    ],
+    images: ["https://placehold.co/800x800/7a7aa4/ffffff?text=Disenio"],
     category: "Servicios",
     contact: {
       whatsapp: "5491112345678",

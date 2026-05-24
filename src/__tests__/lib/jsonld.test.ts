@@ -30,13 +30,20 @@ describe("generateProductJsonLd", () => {
   });
 
   it("includes the product description", () => {
-    const product = createProduct({ description: "Una mochila impermeable 40L" });
+    const product = createProduct({
+      description: "Una mochila impermeable 40L",
+    });
     const jsonld = generateProductJsonLd(product);
     expect(jsonld.description).toBe("Una mochila impermeable 40L");
   });
 
   it("includes the primary image URL", () => {
-    const product = createProduct({ images: ["https://example.com/zapas.jpg", "https://example.com/zapas2.jpg"] });
+    const product = createProduct({
+      images: [
+        "https://example.com/zapas.jpg",
+        "https://example.com/zapas2.jpg",
+      ],
+    });
     const jsonld = generateProductJsonLd(product);
     expect(jsonld.image).toBe("https://example.com/zapas.jpg");
   });

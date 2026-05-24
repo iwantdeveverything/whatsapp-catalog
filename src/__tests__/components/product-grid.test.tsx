@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProductGrid } from "@/components/product-grid";
 import { useCatalogStore } from "@/lib/store";
@@ -37,11 +37,36 @@ function createProduct(overrides: Partial<Product> = {}): Product {
 }
 
 const MOCK_PRODUCTS: Product[] = [
-  createProduct({ id: "zapatillas", name: "Zapatillas Running", price: 85000, category: "Calzado" }),
-  createProduct({ id: "zapatos", name: "Zapatos de Cuero", price: 120000, category: "Calzado" }),
-  createProduct({ id: "camisa", name: "Camisa Oxford", price: 45000, category: "Ropa" }),
-  createProduct({ id: "remera", name: "Remera Algodón", price: 18000, category: "Ropa" }),
-  createProduct({ id: "mochila", name: "Mochila Viajera", price: 32000, category: "Accesorios" }),
+  createProduct({
+    id: "zapatillas",
+    name: "Zapatillas Running",
+    price: 85000,
+    category: "Calzado",
+  }),
+  createProduct({
+    id: "zapatos",
+    name: "Zapatos de Cuero",
+    price: 120000,
+    category: "Calzado",
+  }),
+  createProduct({
+    id: "camisa",
+    name: "Camisa Oxford",
+    price: 45000,
+    category: "Ropa",
+  }),
+  createProduct({
+    id: "remera",
+    name: "Remera Algodón",
+    price: 18000,
+    category: "Ropa",
+  }),
+  createProduct({
+    id: "mochila",
+    name: "Mochila Viajera",
+    price: 32000,
+    category: "Accesorios",
+  }),
 ];
 
 describe("ProductGrid", () => {
@@ -72,7 +97,9 @@ describe("ProductGrid", () => {
     expect(screen.getByRole("button", { name: "Todos" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Calzado" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Ropa" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Accesorios" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Accesorios" }),
+    ).toBeInTheDocument();
   });
 
   // --- Search filtering ---
@@ -111,7 +138,10 @@ describe("ProductGrid", () => {
   });
 
   it("combines search and category filters", () => {
-    useCatalogStore.setState({ searchQuery: "cuero", activeCategory: "Calzado" });
+    useCatalogStore.setState({
+      searchQuery: "cuero",
+      activeCategory: "Calzado",
+    });
     render(<ProductGrid products={MOCK_PRODUCTS} />);
     expect(screen.getByText("Zapatos de Cuero")).toBeInTheDocument();
     expect(screen.queryByText("Zapatillas Running")).not.toBeInTheDocument();
@@ -122,23 +152,19 @@ describe("ProductGrid", () => {
   it("shows empty state message when no products match", () => {
     useCatalogStore.setState({ searchQuery: "zzzzz" });
     render(<ProductGrid products={MOCK_PRODUCTS} />);
-    expect(
-      screen.getByText("No se encontraron productos"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("No se encontraron productos")).toBeInTheDocument();
   });
 
   // --- Product card links ---
 
   it("renders product links pointing to correct detail pages", () => {
     render(<ProductGrid products={MOCK_PRODUCTS.slice(0, 2)} />);
-    expect(screen.getByRole("link", { name: /zapatillas running/i })).toHaveAttribute(
-      "href",
-      "/zapatillas",
-    );
-    expect(screen.getByRole("link", { name: /zapatos de cuero/i })).toHaveAttribute(
-      "href",
-      "/zapatos",
-    );
+    expect(
+      screen.getByRole("link", { name: /zapatillas running/i }),
+    ).toHaveAttribute("href", "/zapatillas");
+    expect(
+      screen.getByRole("link", { name: /zapatos de cuero/i }),
+    ).toHaveAttribute("href", "/zapatos");
   });
 
   // --- Responsive grid ---

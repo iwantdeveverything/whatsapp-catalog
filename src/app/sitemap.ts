@@ -3,7 +3,7 @@ import { getAllProducts } from "@/lib/data/catalog";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://catalog.com";
 
-export function sitemap(): MetadataRoute.Sitemap {
+export default function sitemap(): MetadataRoute.Sitemap {
   const products = getAllProducts();
   const categories = Array.from(new Set(products.map((p) => p.category)));
 
@@ -15,7 +15,7 @@ export function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const categoryEntries: MetadataRoute.Sitemap = categories.map((cat) => ({
-    url: `${BASE_URL}/categorias/${encodeURIComponent(cat.toLowerCase())}`,
+    url: `${BASE_URL}/categories/${encodeURIComponent(cat.toLowerCase())}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.6,

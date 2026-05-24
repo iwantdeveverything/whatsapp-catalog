@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Catálogo Digital — WhatsApp Product Catalog
+
+A social-media-optimized digital product catalog built for sharing via WhatsApp.
+Browse products, filter by category, search by name, and consult via WhatsApp with
+one tap. PWA-ready with offline support.
+
+## Tech Stack
+
+| Layer       | Technology                                    |
+| ----------- | --------------------------------------------- |
+| Framework   | Next.js 16 (App Router, SSG)                  |
+| Runtime     | React 19                                      |
+| Language    | TypeScript (strict)                           |
+| Styling     | Tailwind CSS 4                                |
+| State       | Zustand 5                                     |
+| Validation  | Zod 4                                         |
+| Testing     | Vitest 4 + React Testing Library + Playwright |
+| PWA         | Serwist 9                                     |
+| Pkg Manager | pnpm                                          |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Install dependencies
+pnpm install
+
+# Start dev server
 pnpm dev
-# or
-bun dev
+
+# Open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command                     | Description              |
+| --------------------------- | ------------------------ |
+| `pnpm dev`                  | Next.js dev server       |
+| `pnpm build`                | Production build         |
+| `pnpm start`                | Start production server  |
+| `pnpm lint`                 | Run ESLint               |
+| `pnpm tsc --noEmit`         | TypeScript check         |
+| `pnpm vitest run`           | Unit + integration tests |
+| `pnpm exec playwright test` | E2E tests (headless)     |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── layout.tsx          # Root layout (Inter font, metadata, PWA banner)
+│   ├── page.tsx            # Homepage (SSG catalog grid)
+│   ├── [productId]/        # Product detail page (SSG)
+│   │   ├── page.tsx        # Metadata, JSON-LD, gallery, WhatsApp CTA
+│   │   └── opengraph-image.tsx  # Dynamic OG images (1200×630)
+│   ├── categories/[category]/page.tsx  # Category pages (SSG)
+│   ├── sitemap.ts          # Dynamic sitemap
+│   ├── robots.ts           # Robots.txt config
+│   ├── manifest.ts         # PWA manifest
+│   └── sw.ts              # Service worker (Serwist)
+├── components/             # Reusable UI components
+│   ├── product-card.tsx    # Product card (server)
+│   ├── product-grid.tsx    # Product grid + search + filters (client)
+│   ├── product-gallery.tsx # Image carousel (client)
+│   ├── search-bar.tsx      # Search input (client)
+│   ├── category-filter.tsx # Category pills (client)
+│   ├── whatsapp-cta.tsx    # WhatsApp consult button (client)
+│   └── install-banner.tsx  # PWA install prompt (client)
+├── lib/
+│   ├── schemas.ts          # Zod schemas (Product + Catalog)
+│   ├── store.ts            # Zustand catalog store
+│   ├── jsonld.ts           # JSON-LD Product schema generator
+│   ├── data/
+│   │   ├── products.ts     # Sample product data (7 products, 4 categories)
+│   │   └── catalog.ts      # Catalog query functions
+│   ├── sharing/
+│   │   ├── whatsapp-url.ts # WhatsApp deep-link builder
+│   │   └── contact-fallback.ts # Contact priority resolver
+│   └── og/
+│       └── fallback.ts     # OG image fallback generator
+└── __tests__/              # Vitest tests (TDD, 184 tests)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Catalog browsing**: Responsive grid (2/3/4 cols), search (diacritic-insensitive), category filtering
+- **Product detail**: Image gallery, OG metadata, JSON-LD structured data, WhatsApp CTA
+- **SEO**: OpenGraph tags, Twitter cards, sitemap, canonical URLs, dynamic OG images
+- **PWA**: Manifest, service worker (Serwist), offline browsing, install banner
+- **Accessibility**: ARIA labels, heading hierarchy, touch targets ≥44px, keyboard navigation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment Variables
 
-## Deploy on Vercel
+| Variable                       | Description               | Default               |
+| ------------------------------ | ------------------------- | --------------------- |
+| `NEXT_PUBLIC_BASE_URL`         | Base URL for OG/canonical | `https://catalog.com` |
+| `NEXT_PUBLIC_DEFAULT_WHATSAPP` | Fallback WhatsApp number  | —                     |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

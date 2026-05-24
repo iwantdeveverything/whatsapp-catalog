@@ -38,8 +38,7 @@ export function ProductGrid({ products }: ProductGridProps) {
       const matchesSearch =
         !normalizedQuery ||
         normalizeForSearch(p.name).includes(normalizedQuery);
-      const matchesCategory =
-        !activeCategory || p.category === activeCategory;
+      const matchesCategory = !activeCategory || p.category === activeCategory;
       return matchesSearch && matchesCategory;
     });
   }, [products, searchQuery, activeCategory]);

@@ -37,12 +37,17 @@ describe("buildWhatsAppUrl", () => {
   it("encodes the full message with product name and price", () => {
     const product = createProduct({ name: "Zapatillas Running", price: 85000 });
     const url = buildWhatsAppUrl("5491112345678", product);
-    const expectedMessage = encodeURIComponent("Hola! Me interesa Zapatillas Running - $85.000");
+    const expectedMessage = encodeURIComponent(
+      "Hola! Me interesa Zapatillas Running - $85.000",
+    );
     expect(url).toContain(expectedMessage);
   });
 
   it('renders "Consultar" when price is "Consultar"', () => {
-    const product = createProduct({ name: "Diseño", price: "Consultar" as const });
+    const product = createProduct({
+      name: "Diseño",
+      price: "Consultar" as const,
+    });
     const url = buildWhatsAppUrl("5491112345678", product);
     expect(url).toContain(encodeURIComponent("Consultar"));
     expect(url).not.toContain(encodeURIComponent("$"));
@@ -55,9 +60,19 @@ describe("buildWhatsAppUrl", () => {
   });
 
   it("encodes the product URL in the message when provided", () => {
-    const product = createProduct({ id: "mochila-viajera", name: "Mochila Viajera", price: 32000 });
-    const url = buildWhatsAppUrl("5491112345678", product, "https://catalog.com/mochila-viajera");
-    const productUrlEncoded = encodeURIComponent("https://catalog.com/mochila-viajera");
+    const product = createProduct({
+      id: "mochila-viajera",
+      name: "Mochila Viajera",
+      price: 32000,
+    });
+    const url = buildWhatsAppUrl(
+      "5491112345678",
+      product,
+      "https://catalog.com/mochila-viajera",
+    );
+    const productUrlEncoded = encodeURIComponent(
+      "https://catalog.com/mochila-viajera",
+    );
     expect(url).toContain(productUrlEncoded);
   });
 

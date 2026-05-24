@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { sitemap } from "@/app/sitemap";
+import sitemap from "@/app/sitemap";
 import type { MetadataRoute } from "next";
 
 describe("sitemap", () => {
@@ -21,8 +21,10 @@ describe("sitemap", () => {
   });
 
   it("includes at least one product URL", () => {
-    const productEntries = result.filter((entry) =>
-      entry.url.includes("/zapatillas-running") || entry.url.includes("/camisa-oxford"),
+    const productEntries = result.filter(
+      (entry) =>
+        entry.url.includes("/zapatillas-running") ||
+        entry.url.includes("/camisa-oxford"),
     );
     expect(productEntries.length).toBeGreaterThan(0);
   });
@@ -31,7 +33,7 @@ describe("sitemap", () => {
     const productEntries = result.filter(
       (entry) =>
         entry.url !== "https://catalog.com" &&
-        !entry.url.includes("/categorias/"),
+        !entry.url.includes("/categories/"),
     );
     for (const entry of productEntries) {
       expect(entry.lastModified).toBeDefined();
@@ -41,7 +43,7 @@ describe("sitemap", () => {
 
   it("includes category page URLs", () => {
     const categoryEntries = result.filter((entry) =>
-      entry.url.includes("/categorias/"),
+      entry.url.includes("/categories/"),
     );
     expect(categoryEntries.length).toBeGreaterThan(0);
   });
@@ -51,7 +53,7 @@ describe("sitemap", () => {
     const productEntries = result.filter(
       (entry) =>
         entry.url !== "https://catalog.com" &&
-        !entry.url.includes("/categorias/"),
+        !entry.url.includes("/categories/"),
     );
     // All products in data are active (7 products), so we expect 7 product entries
     expect(productEntries.length).toBe(7);
