@@ -7,6 +7,7 @@
   --theme-surface1: #f6f6f7;
   --theme-surface2: #e4e5e7;
   --theme-surface3: #d2d4d6;
+  --theme-surfaceHover: #d2d4d6;
   --theme-hairline: #c9cccf;
   --theme-muted: #6d7175;
   --theme-primary: #008060;
@@ -20,6 +21,7 @@
   --theme-surface1: #f6f6f7;
   --theme-surface2: #e4e5e7;
   --theme-surface3: #d2d4d6;
+  --theme-surfaceHover: #d2d4d6;
   --theme-hairline: #c9cccf;
   --theme-muted: #6d7175;
   --theme-primary: #008060;
@@ -34,6 +36,7 @@
   --color-surface1: var(--theme-surface1);
   --color-surface2: var(--theme-surface2);
   --color-surface3: var(--theme-surface3);
+  --color-surfaceHover: var(--theme-surfaceHover);
   --color-hairline: var(--theme-hairline);
   --color-muted: var(--theme-muted);
   --color-primary: var(--theme-primary);
