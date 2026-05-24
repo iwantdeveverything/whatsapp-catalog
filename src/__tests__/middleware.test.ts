@@ -31,4 +31,19 @@ describe("resolveThemeFromCookie", () => {
   it("handles URL-encoded cookie values", () => {
     expect(resolveThemeFromCookie("theme=shopify")).toBe("shopify");
   });
+
+  it("accepts all 15 registered theme IDs", () => {
+    const validThemes = [
+      "shopify", "nike", "airbnb", "starbucks",
+      "apple", "spotify", "tesla", "vercel",
+      "linear", "supabase", "figma", "notion",
+      "stripe", "claude", "mistral",
+    ];
+    for (const themeId of validThemes) {
+      expect(
+        resolveThemeFromCookie(`theme=${themeId}`),
+        `theme "${themeId}" should be accepted`,
+      ).toBe(themeId);
+    }
+  });
 });
