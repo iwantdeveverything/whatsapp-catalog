@@ -48,7 +48,7 @@ export function ProductGrid({ products }: ProductGridProps) {
       <SearchBar />
       <CategoryFilter categories={uniqueCategories} />
       {filteredProducts.length === 0 ? (
-        <p className="text-center text-gray-500 py-12">
+        <p className="text-center text-muted py-12">
           No se encontraron productos
         </p>
       ) : (

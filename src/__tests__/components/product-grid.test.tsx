@@ -69,6 +69,11 @@ const MOCK_PRODUCTS: Product[] = [
   }),
 ];
 
+/** Render component wrapped in the Shopify theme context */
+function renderWithTheme(ui: React.ReactElement) {
+  return render(<div data-theme="shopify">{ui}</div>);
+}
+
 describe("ProductGrid", () => {
   beforeEach(() => {
     useCatalogStore.setState({
@@ -81,19 +86,19 @@ describe("ProductGrid", () => {
   // --- Basic rendering ---
 
   it("renders all products when no filters are active", () => {
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     for (const product of MOCK_PRODUCTS) {
       expect(screen.getByText(product.name)).toBeInTheDocument();
     }
   });
 
   it("renders SearchBar component", () => {
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     expect(screen.getByRole("searchbox")).toBeInTheDocument();
   });
 
   it("renders category filter with unique categories", () => {
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     expect(screen.getByRole("button", { name: "Todos" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Calzado" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Ropa" })).toBeInTheDocument();
@@ -106,14 +111,14 @@ describe("ProductGrid", () => {
 
   it("filters products by search query (case-insensitive)", () => {
     useCatalogStore.setState({ searchQuery: "zapatillas" });
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     expect(screen.getByText("Zapatillas Running")).toBeInTheDocument();
     expect(screen.queryByText("Zapatos de Cuero")).not.toBeInTheDocument();
   });
 
   it("filters products by partial name match", () => {
     useCatalogStore.setState({ searchQuery: "zap" });
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     expect(screen.getByText("Zapatillas Running")).toBeInTheDocument();
     expect(screen.getByText("Zapatos de Cuero")).toBeInTheDocument();
     expect(screen.queryByText("Camisa Oxford")).not.toBeInTheDocument();
@@ -121,7 +126,7 @@ describe("ProductGrid", () => {
 
   it("shows all products when search query is empty", () => {
     useCatalogStore.setState({ searchQuery: "" });
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     for (const product of MOCK_PRODUCTS) {
       expect(screen.getByText(product.name)).toBeInTheDocument();
     }
@@ -131,7 +136,7 @@ describe("ProductGrid", () => {
 
   it("filters products by active category", () => {
     useCatalogStore.setState({ activeCategory: "Calzado" });
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     expect(screen.getByText("Zapatillas Running")).toBeInTheDocument();
     expect(screen.getByText("Zapatos de Cuero")).toBeInTheDocument();
     expect(screen.queryByText("Camisa Oxford")).not.toBeInTheDocument();
@@ -142,7 +147,7 @@ describe("ProductGrid", () => {
       searchQuery: "cuero",
       activeCategory: "Calzado",
     });
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     expect(screen.getByText("Zapatos de Cuero")).toBeInTheDocument();
     expect(screen.queryByText("Zapatillas Running")).not.toBeInTheDocument();
   });
@@ -151,14 +156,14 @@ describe("ProductGrid", () => {
 
   it("shows empty state message when no products match", () => {
     useCatalogStore.setState({ searchQuery: "zzzzz" });
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     expect(screen.getByText("No se encontraron productos")).toBeInTheDocument();
   });
 
   // --- Product card links ---
 
   it("renders product links pointing to correct detail pages", () => {
-    render(<ProductGrid products={MOCK_PRODUCTS.slice(0, 2)} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS.slice(0, 2)} />);
     expect(
       screen.getByRole("link", { name: /zapatillas running/i }),
     ).toHaveAttribute("href", "/zapatillas");
@@ -170,7 +175,7 @@ describe("ProductGrid", () => {
   // --- Responsive grid ---
 
   it("renders products in a grid container", () => {
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     // The grid div should have grid classes
     const grid = document.querySelector(".grid");
     expect(grid).toBeInTheDocument();
@@ -180,7 +185,7 @@ describe("ProductGrid", () => {
 
   it("updates store when category pill is clicked", async () => {
     const user = userEvent.setup();
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     await user.click(screen.getByRole("button", { name: "Calzado" }));
     expect(useCatalogStore.getState().activeCategory).toBe("Calzado");
   });
@@ -189,7 +194,7 @@ describe("ProductGrid", () => {
 
   it("filters products with diacritic-insensitive search", () => {
     useCatalogStore.setState({ searchQuery: "algodon" });
-    render(<ProductGrid products={MOCK_PRODUCTS} />);
+    renderWithTheme(<ProductGrid products={MOCK_PRODUCTS} />);
     expect(screen.getByText("Remera Algodón")).toBeInTheDocument();
   });
 });
