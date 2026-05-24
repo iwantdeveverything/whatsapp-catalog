@@ -30,8 +30,8 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
         onClick={() => handleClick(null)}
         className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors min-h-[44px] min-w-[44px] ${
           activeCategory === null
-            ? "bg-gray-900 text-white"
-            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            ? "bg-primary text-onPrimary"
+            : "bg-surface2 text-muted hover:bg-surfaceHover"
         }`}
       >
         Todos
@@ -44,8 +44,8 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
           onClick={() => handleClick(category)}
           className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors min-h-[44px] min-w-[44px] ${
             activeCategory === category
-              ? "bg-gray-900 text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-primary text-onPrimary"
+              : "bg-surface2 text-muted hover:bg-surfaceHover"
           }`}
         >
           {category}
