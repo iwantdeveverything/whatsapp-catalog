@@ -1,26 +1,50 @@
 @import "tailwindcss";
 
+/* ── Semantic theme tokens (fallback + Shopify default) ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --theme-canvas: #ffffff;
+  --theme-ink: #121212;
+  --theme-surface1: #f6f6f7;
+  --theme-surface2: #e4e5e7;
+  --theme-surface3: #d2d4d6;
+  --theme-hairline: #c9cccf;
+  --theme-muted: #6d7175;
+  --theme-primary: #008060;
+  --theme-onPrimary: #ffffff;
+  --theme-accent: #c4320a;
 }
 
+[data-theme="shopify"] {
+  --theme-canvas: #ffffff;
+  --theme-ink: #121212;
+  --theme-surface1: #f6f6f7;
+  --theme-surface2: #e4e5e7;
+  --theme-surface3: #d2d4d6;
+  --theme-hairline: #c9cccf;
+  --theme-muted: #6d7175;
+  --theme-primary: #008060;
+  --theme-onPrimary: #ffffff;
+  --theme-accent: #c4320a;
+}
+
+/* ── Tailwind 4 @theme: map utility names to CSS custom properties ── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-canvas: var(--theme-canvas);
+  --color-ink: var(--theme-ink);
+  --color-surface1: var(--theme-surface1);
+  --color-surface2: var(--theme-surface2);
+  --color-surface3: var(--theme-surface3);
+  --color-hairline: var(--theme-hairline);
+  --color-muted: var(--theme-muted);
+  --color-primary: var(--theme-primary);
+  --color-onPrimary: var(--theme-onPrimary);
+  --color-accent: var(--theme-accent);
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ── Global defaults ── */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--theme-canvas);
+  color: var(--theme-ink);
   font-family: Arial, Helvetica, sans-serif;
 }
