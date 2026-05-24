@@ -53,6 +53,23 @@ export enum ThemeCategory {
   Devtools = "devtools",
   Media = "media",
   Fintech = "fintech",
+  AI = "ai",
+}
+
+/** Font configuration for a theme. */
+export interface ThemeFonts {
+  /** Primary font family name */
+  family: string;
+  /** Google Fonts CSS import URL (optional) */
+  googleFontsUrl?: string;
+  /** Fallback font stack */
+  fallback: string;
+}
+
+/** Theme metadata — source and attribution. */
+export interface ThemeMetadata {
+  /** URL to the original DESIGN.md source on GitHub */
+  source: string;
 }
 
 export interface ThemeDefinition {
@@ -60,9 +77,12 @@ export interface ThemeDefinition {
   name: string;
   category: ThemeCategory;
   tokens: ThemeTokens;
-  /** Optional Google Font or system font family */
-  fonts?: string;
+  /** Font configuration */
+  fonts: ThemeFonts;
+  /** Brief one-line description */
   description: string;
+  /** Attribution metadata */
+  metadata: ThemeMetadata;
 }
 
 /** The default theme ID used when no preference is stored. */
