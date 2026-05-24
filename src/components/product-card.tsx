@@ -1,0 +1,40 @@
+import Image from "next/image";
+import Link from "next/link";
+import type { Product } from "@/lib/schemas";
+
+function formatPrice(price: Product["price"]): string {
+  if (price === "Consultar") return "Consultar";
+  return "$" + price.toLocaleString("es-AR");
+}
+
+export function ProductCard({ product }: { product: Product }) {
+  const primaryImage = product.images[0];
+
+  return (
+    <Link
+      href={`/${product.id}`}
+      className="group block rounded-lg border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow"
+    >
+      <div className="aspect-square relative bg-gray-100">
+        <Image
+          src={primaryImage}
+          alt={product.name}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+      <div className="p-3 space-y-1">
+        <span className="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+          {product.category}
+        </span>
+        <h3 className="font-semibold text-sm text-gray-900 line-clamp-2">
+          {product.name}
+        </h3>
+        <p className="text-sm font-bold text-gray-900">
+          {formatPrice(product.price)}
+        </p>
+      </div>
+    </Link>
+  );
+}
