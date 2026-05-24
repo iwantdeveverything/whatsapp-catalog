@@ -30,7 +30,10 @@ describe("generateFallbackOgImage", () => {
   });
 
   it('includes "Consultar" when price is "Consultar"', () => {
-    const product = createProduct({ name: "Diseño", price: "Consultar" as const });
+    const product = createProduct({
+      name: "Diseño",
+      price: "Consultar" as const,
+    });
     const result = generateFallbackOgImage(product);
     expect(result.price).toBe("Consultar");
   });

@@ -20,17 +20,13 @@ describe("CategoryFilter", () => {
   it("renders all categories as clickable buttons", () => {
     render(<CategoryFilter categories={SAMPLE_CATEGORIES} />);
     for (const cat of SAMPLE_CATEGORIES) {
-      expect(
-        screen.getByRole("button", { name: cat }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: cat })).toBeInTheDocument();
     }
   });
 
   it("renders an 'All' button to clear the filter", () => {
     render(<CategoryFilter categories={SAMPLE_CATEGORIES} />);
-    expect(
-      screen.getByRole("button", { name: "Todos" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Todos" })).toBeInTheDocument();
   });
 
   it("renders correct number of buttons (categories + 1 for All)", () => {
@@ -51,17 +47,19 @@ describe("CategoryFilter", () => {
   it("highlights the active category button", () => {
     useCatalogStore.setState({ activeCategory: "Ropa" });
     render(<CategoryFilter categories={SAMPLE_CATEGORIES} />);
-    expect(
-      screen.getByRole("button", { name: "Ropa" }),
-    ).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Ropa" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
   });
 
   it("does not highlight inactive category buttons", () => {
     useCatalogStore.setState({ activeCategory: "Ropa" });
     render(<CategoryFilter categories={SAMPLE_CATEGORIES} />);
-    expect(
-      screen.getByRole("button", { name: "Calzado" }),
-    ).toHaveAttribute("aria-pressed", "false");
+    expect(screen.getByRole("button", { name: "Calzado" })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
   });
 
   // --- Interaction ---

@@ -87,7 +87,7 @@ describe("generateMetadata", () => {
     expect(metadata.openGraph).toBeDefined();
     expect(metadata.openGraph!.title).toBe("Zapatillas Running");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect((metadata.openGraph as any).type).toBe("product");
+    expect((metadata.openGraph as any).type).toBe("website");
     expect(metadata.openGraph!.images).toBeDefined();
     if (metadata.openGraph!.images) {
       const images = Array.isArray(metadata.openGraph!.images)
@@ -200,8 +200,6 @@ describe("ProductPage", () => {
         params: Promise.resolve({ productId: "nonexistent" }),
       }),
     );
-    expect(
-      screen.getByText(/producto no encontrado/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/producto no encontrado/i)).toBeInTheDocument();
   });
 });

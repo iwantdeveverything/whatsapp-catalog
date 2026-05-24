@@ -15,7 +15,7 @@ describe("manifest", () => {
     expect(result.short_name!.length).toBeLessThanOrEqual(12);
   });
 
-  it('sets display to standalone for PWA', () => {
+  it("sets display to standalone for PWA", () => {
     expect(result.display).toBe("standalone");
   });
 
