@@ -13,9 +13,9 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/${product.id}`}
-      className="group block rounded-lg border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow"
+      className="group block rounded-lg border border-hairline bg-canvas overflow-hidden hover:shadow-md transition-shadow"
     >
-      <div className="aspect-square relative bg-gray-100">
+      <div className="aspect-square relative bg-surface2">
         <Image
           src={primaryImage}
           alt={product.name}
@@ -25,13 +25,13 @@ export function ProductCard({ product }: { product: Product }) {
         />
       </div>
       <div className="p-3 space-y-1">
-        <span className="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+        <span className="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-surface2 text-muted">
           {product.category}
         </span>
-        <h3 className="font-semibold text-sm text-gray-900 line-clamp-2">
+        <h3 className="font-semibold text-sm text-ink line-clamp-2">
           {product.name}
         </h3>
-        <p className="text-sm font-bold text-gray-900">
+        <p className="text-sm font-bold text-ink">
           {formatPrice(product.price)}
         </p>
       </div>

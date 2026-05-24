@@ -40,30 +40,35 @@ function createProduct(overrides: Partial<Product> = {}): Product {
   };
 }
 
+/** Render component wrapped in the Shopify theme context */
+function renderWithTheme(ui: React.ReactElement) {
+  return render(<div data-theme="shopify">{ui}</div>);
+}
+
 describe("ProductCard", () => {
   // --- Basic rendering ---
 
   it("renders the product name", () => {
     const product = createProduct({ name: "Zapatillas Running" });
-    render(<ProductCard product={product} />);
+    renderWithTheme(<ProductCard product={product} />);
     expect(screen.getByText("Zapatillas Running")).toBeInTheDocument();
   });
 
   it("renders the product price formatted with thousands separator", () => {
     const product = createProduct({ price: 85000 });
-    render(<ProductCard product={product} />);
+    renderWithTheme(<ProductCard product={product} />);
     expect(screen.getByText("$85.000")).toBeInTheDocument();
   });
 
   it('renders "Consultar" when price is "Consultar"', () => {
     const product = createProduct({ price: "Consultar" as const });
-    render(<ProductCard product={product} />);
+    renderWithTheme(<ProductCard product={product} />);
     expect(screen.getByText("Consultar")).toBeInTheDocument();
   });
 
   it("renders the category badge", () => {
     const product = createProduct({ category: "Calzado" });
-    render(<ProductCard product={product} />);
+    renderWithTheme(<ProductCard product={product} />);
     expect(screen.getByText("Calzado")).toBeInTheDocument();
   });
 
@@ -71,14 +76,14 @@ describe("ProductCard", () => {
 
   it("wraps the card in a link to the product detail page", () => {
     const product = createProduct({ id: "zapatillas-running" });
-    render(<ProductCard product={product} />);
+    renderWithTheme(<ProductCard product={product} />);
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "/zapatillas-running");
   });
 
   it("link includes the product id in the href", () => {
     const product = createProduct({ id: "mochila-viajera" });
-    render(<ProductCard product={product} />);
+    renderWithTheme(<ProductCard product={product} />);
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "/mochila-viajera");
   });
@@ -90,23 +95,40 @@ describe("ProductCard", () => {
       images: ["https://example.com/zapas.jpg"],
       name: "Zapatillas",
     });
-    render(<ProductCard product={product} />);
+    renderWithTheme(<ProductCard product={product} />);
     const img = screen.getByRole("img");
     expect(img).toHaveAttribute("src", "https://example.com/zapas.jpg");
     expect(img).toHaveAttribute("alt", "Zapatillas");
+  });
+
+  // --- Themed card: semantic tokens preserve all content ---
+
+  it("renders all content correctly inside shopify theme", () => {
+    const product = createProduct({
+      name: "Camisa Oxford",
+      price: 45000,
+      category: "Ropa",
+    });
+    renderWithTheme(<ProductCard product={product} />);
+    // Name, price, and category must all be visible
+    expect(screen.getByText("Camisa Oxford")).toBeInTheDocument();
+    expect(screen.getByText("$45.000")).toBeInTheDocument();
+    expect(screen.getByText("Ropa")).toBeInTheDocument();
+    // Link still navigates correctly
+    expect(screen.getByRole("link")).toHaveAttribute("href", "/test-product");
   });
 
   // --- Price edge cases ---
 
   it("formats small prices correctly", () => {
     const product = createProduct({ price: 9500 });
-    render(<ProductCard product={product} />);
+    renderWithTheme(<ProductCard product={product} />);
     expect(screen.getByText("$9.500")).toBeInTheDocument();
   });
 
   it("formats prices with six digits correctly", () => {
     const product = createProduct({ price: 120000 });
-    render(<ProductCard product={product} />);
+    renderWithTheme(<ProductCard product={product} />);
     expect(screen.getByText("$120.000")).toBeInTheDocument();
   });
 });
