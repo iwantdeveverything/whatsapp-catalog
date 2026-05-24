@@ -19,10 +19,10 @@ export function SearchBar() {
         placeholder="Buscar productos..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pl-10 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 min-h-[44px]"
+        className="w-full rounded-lg border border-hairline bg-canvas px-4 py-2.5 pl-10 text-sm text-ink placeholder-muted focus:border-hairline focus:outline-none focus:ring-1 focus:ring-hairline min-h-[44px]"
       />
       <svg
-        className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
+        className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"

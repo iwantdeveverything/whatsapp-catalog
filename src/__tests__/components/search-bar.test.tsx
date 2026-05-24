@@ -4,6 +4,11 @@ import userEvent from "@testing-library/user-event";
 import { SearchBar } from "@/components/search-bar";
 import { useCatalogStore } from "@/lib/store";
 
+/** Render component wrapped in the Shopify theme context */
+function renderWithTheme(ui: React.ReactElement) {
+  return render(<div data-theme="shopify">{ui}</div>);
+}
+
 describe("SearchBar", () => {
   beforeEach(() => {
     useCatalogStore.setState({
@@ -16,7 +21,7 @@ describe("SearchBar", () => {
   // --- Rendering ---
 
   it("renders a search input with a label", () => {
-    render(<SearchBar />);
+    renderWithTheme(<SearchBar />);
     const input = screen.getByRole("searchbox");
     expect(input).toBeInTheDocument();
     expect(input).toHaveAttribute("placeholder", "Buscar productos...");
@@ -24,13 +29,13 @@ describe("SearchBar", () => {
 
   it("displays the current searchQuery from the store", () => {
     useCatalogStore.setState({ searchQuery: "zap" });
-    render(<SearchBar />);
+    renderWithTheme(<SearchBar />);
     const input = screen.getByRole("searchbox");
     expect(input).toHaveValue("zap");
   });
 
   it("displays empty input when store has empty searchQuery", () => {
-    render(<SearchBar />);
+    renderWithTheme(<SearchBar />);
     const input = screen.getByRole("searchbox");
     expect(input).toHaveValue("");
   });
@@ -39,7 +44,7 @@ describe("SearchBar", () => {
 
   it("updates store searchQuery when user types", async () => {
     const user = userEvent.setup();
-    render(<SearchBar />);
+    renderWithTheme(<SearchBar />);
     const input = screen.getByRole("searchbox");
     await user.type(input, "camisa");
     expect(useCatalogStore.getState().searchQuery).toBe("camisa");
@@ -48,7 +53,7 @@ describe("SearchBar", () => {
   it("clears store searchQuery when input is cleared", async () => {
     const user = userEvent.setup();
     useCatalogStore.setState({ searchQuery: "zap" });
-    render(<SearchBar />);
+    renderWithTheme(<SearchBar />);
     const input = screen.getByRole("searchbox");
     await user.clear(input);
     expect(useCatalogStore.getState().searchQuery).toBe("");
@@ -56,7 +61,7 @@ describe("SearchBar", () => {
 
   it("updates store for each keystroke", async () => {
     const user = userEvent.setup();
-    render(<SearchBar />);
+    renderWithTheme(<SearchBar />);
     const input = screen.getByRole("searchbox");
     await user.type(input, "z");
     expect(useCatalogStore.getState().searchQuery).toBe("z");
@@ -69,7 +74,7 @@ describe("SearchBar", () => {
   // --- Accessibility ---
 
   it("has an accessible label via aria-label", () => {
-    render(<SearchBar />);
+    renderWithTheme(<SearchBar />);
     const input = screen.getByRole("searchbox");
     expect(input).toHaveAttribute("aria-label", "Buscar productos");
   });
