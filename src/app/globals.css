@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* ── Google Fonts for theme registry ── */
+@import url(https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap);
+
 /* ── Semantic theme tokens (fallback + Shopify default) ── */
 :root {
   --theme-canvas: #ffffff;
@@ -27,6 +31,234 @@
   --theme-primary: #008060;
   --theme-onPrimary: #ffffff;
   --theme-accent: #c4320a;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Generated theme blocks — 14 curated themes from awesome-design-md
+   ══════════════════════════════════════════════════════════════════ */
+
+[data-theme="nike"] {
+  /* Nike — Futura */
+  --theme-font-family: "Futura", sans-serif;
+  --theme-canvas: #111111;
+  --theme-ink: #FFFFFF;
+  --theme-surface1: #1A1A1A;
+  --theme-surface2: #222222;
+  --theme-surface3: #333333;
+  --theme-hairline: #333333;
+  --theme-muted: #999999;
+  --theme-primary: #FFFFFF;
+  --theme-onPrimary: #111111;
+  --theme-accent: #FF5000;
+  --theme-surfaceHover: #333333;
+}
+
+[data-theme="airbnb"] {
+  /* Airbnb — Circular */
+  --theme-font-family: "Circular", -apple-system, sans-serif;
+  --theme-canvas: #FFFFFF;
+  --theme-ink: #222222;
+  --theme-surface1: #F7F7F7;
+  --theme-surface2: #EBEBEB;
+  --theme-surface3: #DDDDDD;
+  --theme-hairline: #DDDDDD;
+  --theme-muted: #717171;
+  --theme-primary: #FF385C;
+  --theme-onPrimary: #FFFFFF;
+  --theme-accent: #FF385C;
+  --theme-surfaceHover: #DDDDDD;
+}
+
+[data-theme="starbucks"] {
+  /* Starbucks — SoDoSans */
+  --theme-font-family: "SoDoSans", sans-serif;
+  --theme-canvas: #F5F0E8;
+  --theme-ink: #1E3932;
+  --theme-surface1: #E8E2D8;
+  --theme-surface2: #D4CBBC;
+  --theme-surface3: #C0B6A5;
+  --theme-hairline: #D4CBBC;
+  --theme-muted: #6B7B73;
+  --theme-primary: #006241;
+  --theme-onPrimary: #FFFFFF;
+  --theme-accent: #006241;
+  --theme-surfaceHover: #C0B6A5;
+}
+
+[data-theme="apple"] {
+  /* Apple — SF Pro */
+  --theme-font-family: "SF Pro", -apple-system, sans-serif;
+  --theme-canvas: #F5F5F7;
+  --theme-ink: #1D1D1F;
+  --theme-surface1: #FFFFFF;
+  --theme-surface2: #E8E8ED;
+  --theme-surface3: #D2D2D7;
+  --theme-hairline: #D2D2D7;
+  --theme-muted: #86868B;
+  --theme-primary: #0071E3;
+  --theme-onPrimary: #FFFFFF;
+  --theme-accent: #0071E3;
+  --theme-surfaceHover: #D2D2D7;
+}
+
+[data-theme="spotify"] {
+  /* Spotify — Circular */
+  --theme-font-family: "Circular", sans-serif;
+  --theme-canvas: #191414;
+  --theme-ink: #FFFFFF;
+  --theme-surface1: #282828;
+  --theme-surface2: #333333;
+  --theme-surface3: #404040;
+  --theme-hairline: #404040;
+  --theme-muted: #B3B3B3;
+  --theme-primary: #1DB954;
+  --theme-onPrimary: #FFFFFF;
+  --theme-accent: #1DB954;
+  --theme-surfaceHover: #404040;
+}
+
+[data-theme="tesla"] {
+  /* Tesla — Gotham */
+  --theme-font-family: "Gotham", sans-serif;
+  --theme-canvas: #000000;
+  --theme-ink: #FFFFFF;
+  --theme-surface1: #111111;
+  --theme-surface2: #1A1A1A;
+  --theme-surface3: #222222;
+  --theme-hairline: #333333;
+  --theme-muted: #999999;
+  --theme-primary: #FFFFFF;
+  --theme-onPrimary: #000000;
+  --theme-accent: #E82127;
+  --theme-surfaceHover: #222222;
+}
+
+[data-theme="vercel"] {
+  /* Vercel — Geist */
+  --theme-font-family: "Geist", sans-serif;
+  --theme-canvas: #000000;
+  --theme-ink: #FFFFFF;
+  --theme-surface1: #111111;
+  --theme-surface2: #1A1A1A;
+  --theme-surface3: #333333;
+  --theme-hairline: #333333;
+  --theme-muted: #888888;
+  --theme-primary: #FFFFFF;
+  --theme-onPrimary: #000000;
+  --theme-accent: #0070F3;
+  --theme-surfaceHover: #333333;
+}
+
+[data-theme="linear"] {
+  /* Linear — Inter */
+  --theme-font-family: "Inter", system-ui, sans-serif;
+  --theme-canvas: #FFFFFF;
+  --theme-ink: #1A1A1A;
+  --theme-surface1: #F7F7F8;
+  --theme-surface2: #EDEDEF;
+  --theme-surface3: #E0E0E2;
+  --theme-hairline: #E0E0E2;
+  --theme-muted: #6E6E77;
+  --theme-primary: #5E6AD2;
+  --theme-onPrimary: #FFFFFF;
+  --theme-accent: #5E6AD2;
+  --theme-surfaceHover: #E0E0E2;
+}
+
+[data-theme="supabase"] {
+  /* Supabase — Inter */
+  --theme-font-family: "Inter", system-ui, sans-serif;
+  --theme-canvas: #1C1C1C;
+  --theme-ink: #E0E0E0;
+  --theme-surface1: #242424;
+  --theme-surface2: #2A2A2A;
+  --theme-surface3: #333333;
+  --theme-hairline: #333333;
+  --theme-muted: #808080;
+  --theme-primary: #3ECF8E;
+  --theme-onPrimary: #1C1C1C;
+  --theme-accent: #3ECF8E;
+  --theme-surfaceHover: #333333;
+}
+
+[data-theme="figma"] {
+  /* Figma — Inter */
+  --theme-font-family: "Inter", system-ui, sans-serif;
+  --theme-canvas: #FFFFFF;
+  --theme-ink: #000000;
+  --theme-surface1: #F5F5F5;
+  --theme-surface2: #E6E6E6;
+  --theme-surface3: #D9D9D9;
+  --theme-hairline: #E6E6E6;
+  --theme-muted: #888888;
+  --theme-primary: #0D0D0D;
+  --theme-onPrimary: #FFFFFF;
+  --theme-accent: #9747FF;
+  --theme-surfaceHover: #D9D9D9;
+}
+
+[data-theme="notion"] {
+  /* Notion — Inter */
+  --theme-font-family: "Inter", system-ui, sans-serif;
+  --theme-canvas: #FFFFFF;
+  --theme-ink: #37352F;
+  --theme-surface1: #F7F6F3;
+  --theme-surface2: #EDECE9;
+  --theme-surface3: #E3E2E0;
+  --theme-hairline: #E3E2E0;
+  --theme-muted: #9B9A97;
+  --theme-primary: #2383E2;
+  --theme-onPrimary: #FFFFFF;
+  --theme-accent: #E16259;
+  --theme-surfaceHover: #E3E2E0;
+}
+
+[data-theme="stripe"] {
+  /* Stripe — Inter */
+  --theme-font-family: "Inter", system-ui, sans-serif;
+  --theme-canvas: #FFFFFF;
+  --theme-ink: #0A2540;
+  --theme-surface1: #F6F9FC;
+  --theme-surface2: #E6EBF1;
+  --theme-surface3: #D4D9E2;
+  --theme-hairline: #D4D9E2;
+  --theme-muted: #697386;
+  --theme-primary: #635BFF;
+  --theme-onPrimary: #FFFFFF;
+  --theme-accent: #635BFF;
+  --theme-surfaceHover: #D4D9E2;
+}
+
+[data-theme="claude"] {
+  /* Claude — Inter */
+  --theme-font-family: "Inter", system-ui, sans-serif;
+  --theme-canvas: #FAFAF9;
+  --theme-ink: #1C1917;
+  --theme-surface1: #F5F5F4;
+  --theme-surface2: #E7E5E4;
+  --theme-surface3: #D6D3D1;
+  --theme-hairline: #D6D3D1;
+  --theme-muted: #78716C;
+  --theme-primary: #D97706;
+  --theme-onPrimary: #FFFFFF;
+  --theme-accent: #D97706;
+  --theme-surfaceHover: #D6D3D1;
+}
+
+[data-theme="mistral"] {
+  /* Mistral — Inter */
+  --theme-font-family: "Inter", system-ui, sans-serif;
+  --theme-canvas: #0D0D0D;
+  --theme-ink: #F5F5F5;
+  --theme-surface1: #1A1A1A;
+  --theme-surface2: #242424;
+  --theme-surface3: #333333;
+  --theme-hairline: #333333;
+  --theme-muted: #888888;
+  --theme-primary: #F97316;
+  --theme-onPrimary: #0D0D0D;
+  --theme-accent: #F97316;
+  --theme-surfaceHover: #333333;
 }
 
 /* ── Tailwind 4 @theme: map utility names to CSS custom properties ── */

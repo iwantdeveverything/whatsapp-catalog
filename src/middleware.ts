@@ -3,7 +3,23 @@ import type { NextRequest } from "next/server";
 import { DEFAULT_THEME } from "@/lib/themes/types";
 
 /** Themes that are allowed to be set via cookie. */
-const ALLOWED_THEMES: string[] = ["shopify"];
+const ALLOWED_THEMES: string[] = [
+  "shopify",
+  "nike",
+  "airbnb",
+  "starbucks",
+  "apple",
+  "spotify",
+  "tesla",
+  "vercel",
+  "linear",
+  "supabase",
+  "figma",
+  "notion",
+  "stripe",
+  "claude",
+  "mistral",
+];
 
 /**
  * Extracts and validates the theme ID from a cookie header string.
