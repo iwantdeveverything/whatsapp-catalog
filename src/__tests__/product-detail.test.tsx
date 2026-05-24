@@ -48,6 +48,11 @@ function getRealProduct(): Product {
   return product;
 }
 
+/** Render RSC page result wrapped in the Shopify theme context */
+function renderWithTheme(ui: React.ReactElement) {
+  return render(<div data-theme="shopify">{ui}</div>);
+}
+
 describe("generateStaticParams", () => {
   it("returns params for all active products", () => {
     const params = generateStaticParams();
@@ -127,7 +132,7 @@ describe("generateMetadata", () => {
 describe("ProductPage", () => {
   it("renders the product name as a heading", async () => {
     const product = getRealProduct();
-    render(
+    renderWithTheme(
       await ProductPage({
         params: Promise.resolve({ productId: product.id }),
       }),
@@ -139,7 +144,7 @@ describe("ProductPage", () => {
 
   it("renders the product price formatted", async () => {
     const product = getRealProduct();
-    render(
+    renderWithTheme(
       await ProductPage({
         params: Promise.resolve({ productId: product.id }),
       }),
@@ -149,7 +154,7 @@ describe("ProductPage", () => {
 
   it("renders the product description", async () => {
     const product = getRealProduct();
-    render(
+    renderWithTheme(
       await ProductPage({
         params: Promise.resolve({ productId: product.id }),
       }),
@@ -159,7 +164,7 @@ describe("ProductPage", () => {
 
   it("renders the product images", async () => {
     const product = getRealProduct();
-    render(
+    renderWithTheme(
       await ProductPage({
         params: Promise.resolve({ productId: product.id }),
       }),
@@ -170,7 +175,7 @@ describe("ProductPage", () => {
 
   it("renders the WhatsApp CTA component", async () => {
     const product = getRealProduct();
-    render(
+    renderWithTheme(
       await ProductPage({
         params: Promise.resolve({ productId: product.id }),
       }),
@@ -180,7 +185,7 @@ describe("ProductPage", () => {
 
   it("renders a JSON-LD script tag with Product schema", async () => {
     const product = getRealProduct();
-    const { container } = render(
+    const { container } = renderWithTheme(
       await ProductPage({
         params: Promise.resolve({ productId: product.id }),
       }),
@@ -195,7 +200,7 @@ describe("ProductPage", () => {
   });
 
   it("shows a not-found message for invalid product id", async () => {
-    render(
+    renderWithTheme(
       await ProductPage({
         params: Promise.resolve({ productId: "nonexistent" }),
       }),

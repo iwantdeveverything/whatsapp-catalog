@@ -69,10 +69,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (!product) {
     return (
       <main className="max-w-3xl mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-ink">
           Producto no encontrado
         </h1>
-        <p className="mt-2 text-gray-500">
+        <p className="mt-2 text-muted">
           El producto que buscás no existe o fue desactivado.
         </p>
       </main>
@@ -89,14 +89,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <nav className="mb-6 text-sm text-gray-500">
-        <Link href="/" className="hover:text-gray-700">
+      <nav className="mb-6 text-sm text-muted">
+        <Link href="/" className="hover:text-ink">
           Catálogo
         </Link>
         <span className="mx-2">/</span>
-        <span className="text-gray-900">{product.category}</span>
+        <span className="text-ink">{product.category}</span>
         <span className="mx-2">/</span>
-        <span className="text-gray-900">{product.name}</span>
+        <span className="text-ink">{product.name}</span>
       </nav>
 
       <div className="flex flex-col md:flex-row gap-8">
@@ -108,17 +108,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* Product Info */}
         <div className="w-full md:w-2/5 space-y-6">
           <div>
-            <span className="inline-block text-sm font-medium px-3 py-1 rounded-full bg-gray-100 text-gray-600 mb-3">
+            <span className="inline-block text-sm font-medium px-3 py-1 rounded-full bg-surface2 text-muted mb-3">
               {product.category}
             </span>
-            <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+            <h1 className="text-3xl font-bold text-ink">{product.name}</h1>
           </div>
 
-          <p className="text-2xl font-bold text-green-700">{priceStr}</p>
+          <p className="text-2xl font-bold text-accent">{priceStr}</p>
 
-          <p className="text-gray-600 leading-relaxed">{product.description}</p>
+          <p className="text-muted leading-relaxed">{product.description}</p>
 
-          <div className="pt-4 border-t border-gray-200">
+          <div className="pt-4 border-t border-hairline">
             <WhatsAppCta product={product} />
           </div>
         </div>
