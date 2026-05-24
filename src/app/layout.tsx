@@ -37,6 +37,17 @@ export default async function RootLayout({
       data-theme={theme}
       className={`${inter.variable} h-full antialiased font-sans`}
     >
+      <head>
+        {/* Google Fonts for theme registry (Inter + Geist) */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-canvas text-ink">
         <ThemeProvider>
           {children}

@@ -14,10 +14,16 @@ vi.mock("next/link", () => ({
   default: ({
     children,
     href,
+    ...rest
   }: {
     children: React.ReactNode;
     href: string;
-  }) => <a href={href}>{children}</a>,
+    [key: string]: unknown;
+  }) => (
+    <a href={href} {...rest}>
+      {children}
+    </a>
+  ),
 }));
 
 describe("HomePage", () => {
@@ -61,5 +67,12 @@ describe("HomePage", () => {
     for (const name of productNames) {
       expect(screen.getByText(name)).toBeInTheDocument();
     }
+  });
+
+  it("renders a link to the settings page", () => {
+    render(<HomePage />);
+    const settingsLink = screen.getByRole("link", { name: /ajustes|tema/i });
+    expect(settingsLink).toBeInTheDocument();
+    expect(settingsLink).toHaveAttribute("href", "/ajustes");
   });
 });
