@@ -34,7 +34,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   return (
     <div className="space-y-4">
       {/* Main image */}
-      <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
+      <div className="relative aspect-square bg-surface2 rounded-lg overflow-hidden">
         <Image
           src={images[currentIndex]}
           alt={altText}
@@ -51,7 +51,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
           <div className="flex items-center justify-between">
             <button
               onClick={goPrev}
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-white border border-gray-200 hover:bg-gray-50 transition-colors"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-canvas border border-hairline hover:bg-surfaceHover transition-colors"
               aria-label="Anterior imagen"
               type="button"
             >
@@ -84,15 +84,15 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                   type="button"
                   className={`min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full transition-all ${
                     index === currentIndex
-                      ? "bg-gray-900 scale-110"
-                      : "bg-gray-300 hover:bg-gray-400"
+                      ? "bg-primary scale-110"
+                      : "bg-surface3 hover:bg-surfaceHover"
                   }`}
                 >
                   <span
                     className={`block rounded-full transition-all ${
                       index === currentIndex
-                        ? "w-3 h-3 bg-white"
-                        : "w-2 h-2 bg-gray-500"
+                        ? "w-3 h-3 bg-onPrimary"
+                        : "w-2 h-2 bg-muted"
                     }`}
                   />
                 </button>
@@ -101,7 +101,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
             <button
               onClick={goNext}
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-white border border-gray-200 hover:bg-gray-50 transition-colors"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-canvas border border-hairline hover:bg-surfaceHover transition-colors"
               aria-label="Siguiente imagen"
               type="button"
             >

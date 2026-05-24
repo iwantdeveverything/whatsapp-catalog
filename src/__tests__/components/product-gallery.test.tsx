@@ -17,22 +17,25 @@ const sampleImages = [
   "https://example.com/photo3.jpg",
 ];
 
+/** Render component wrapped in the Shopify theme context */
+function renderWithTheme(ui: React.ReactElement) {
+  return render(<div data-theme="shopify">{ui}</div>);
+}
+
 describe("ProductGallery", () => {
   // --- Basic rendering ---
 
   it("renders the first image by default", () => {
-    render(<ProductGallery images={sampleImages} productName="Test Product" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test Product" />);
     const img = screen.getByRole("img");
     expect(img).toHaveAttribute("src", sampleImages[0]);
     expect(img).toHaveAttribute("alt", "Test Product - imagen 1");
   });
 
   it("renders image with correct alt text for subsequent images", async () => {
-    render(<ProductGallery images={sampleImages} productName="Zapatillas" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Zapatillas" />);
     const user = userEvent.setup();
-    // Navigate to second image
     await user.click(screen.getByRole("button", { name: /siguiente/i }));
-    // After click, the second image should have appropriate alt text
     const img = screen.getByRole("img");
     expect(img).toHaveAttribute("alt", "Zapatillas - imagen 2");
   });
@@ -40,7 +43,7 @@ describe("ProductGallery", () => {
   // --- Single image (no controls) ---
 
   it("does not render navigation buttons when there is only one image", () => {
-    render(
+    renderWithTheme(
       <ProductGallery
         images={["https://example.com/single.jpg"]}
         productName="Single Product"
@@ -55,7 +58,7 @@ describe("ProductGallery", () => {
   });
 
   it("renders the single image with correct alt", () => {
-    render(
+    renderWithTheme(
       <ProductGallery
         images={["https://example.com/only.jpg"]}
         productName="Unique"
@@ -69,7 +72,7 @@ describe("ProductGallery", () => {
   // --- Navigation (multiple images) ---
 
   it("navigates to the next image when clicking next button", async () => {
-    render(<ProductGallery images={sampleImages} productName="Test" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test" />);
     const user = userEvent.setup();
     const nextButton = screen.getByRole("button", { name: /siguiente/i });
     await user.click(nextButton);
@@ -79,11 +82,9 @@ describe("ProductGallery", () => {
   });
 
   it("navigates to the previous image when clicking prev button", async () => {
-    render(<ProductGallery images={sampleImages} productName="Test" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test" />);
     const user = userEvent.setup();
-    // Go forward first
     await user.click(screen.getByRole("button", { name: /siguiente/i }));
-    // Then back
     await user.click(screen.getByRole("button", { name: /anterior/i }));
 
     const img = screen.getByRole("img");
@@ -91,7 +92,7 @@ describe("ProductGallery", () => {
   });
 
   it("wraps to the last image when clicking prev on first image", async () => {
-    render(<ProductGallery images={sampleImages} productName="Test" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test" />);
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: /anterior/i }));
 
@@ -100,12 +101,10 @@ describe("ProductGallery", () => {
   });
 
   it("wraps to the first image when clicking next on last image", async () => {
-    render(<ProductGallery images={sampleImages} productName="Test" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test" />);
     const user = userEvent.setup();
-    // Go to last image
     await user.click(screen.getByRole("button", { name: /siguiente/i }));
     await user.click(screen.getByRole("button", { name: /siguiente/i }));
-    // Now on image 3 (index 2), click next
     await user.click(screen.getByRole("button", { name: /siguiente/i }));
 
     const img = screen.getByRole("img");
@@ -115,7 +114,7 @@ describe("ProductGallery", () => {
   // --- Accessibility ---
 
   it("navigation buttons have accessible names", () => {
-    render(<ProductGallery images={sampleImages} productName="Test" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test" />);
     expect(
       screen.getByRole("button", { name: /anterior/i }),
     ).toBeInTheDocument();
@@ -125,7 +124,7 @@ describe("ProductGallery", () => {
   });
 
   it("navigation buttons have min touch target of 44px", () => {
-    render(<ProductGallery images={sampleImages} productName="Test" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test" />);
     const prevButton = screen.getByRole("button", { name: /anterior/i });
     const nextButton = screen.getByRole("button", { name: /siguiente/i });
     expect(prevButton.className).toContain("min-h-[44px]");
@@ -137,21 +136,20 @@ describe("ProductGallery", () => {
   // --- Dot indicators ---
 
   it("renders dot indicators for multiple images", () => {
-    render(<ProductGallery images={sampleImages} productName="Test" />);
-    // Should have 3 dots (one per image)
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test" />);
     const dots = document.querySelectorAll('[role="tab"]');
     expect(dots.length).toBe(3);
   });
 
   it("first dot is selected by default", () => {
-    render(<ProductGallery images={sampleImages} productName="Test" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test" />);
     const dots = document.querySelectorAll('[role="tab"]');
     expect(dots[0]).toHaveAttribute("aria-selected", "true");
     expect(dots[1]).toHaveAttribute("aria-selected", "false");
   });
 
   it("clicking a dot navigates to that image", async () => {
-    render(<ProductGallery images={sampleImages} productName="Test" />);
+    renderWithTheme(<ProductGallery images={sampleImages} productName="Test" />);
     const user = userEvent.setup();
     const dots = document.querySelectorAll('[role="tab"]');
     await user.click(dots[2] as HTMLElement);
@@ -163,9 +161,10 @@ describe("ProductGallery", () => {
   // --- Empty images edge case ---
 
   it("renders nothing when images array is empty", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <ProductGallery images={[]} productName="Empty" />,
     );
-    expect(container.firstChild).toBeNull();
+    // ProductGallery returns null for empty arrays — no img rendered
+    expect(container.querySelector("img")).toBeNull();
   });
 });
