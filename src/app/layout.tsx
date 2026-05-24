@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import { InstallBanner } from "@/components/install-banner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,19 +23,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const theme = headersList.get("x-theme") || "shopify";
+
   return (
     <html
       lang="es"
+      data-theme={theme}
       className={`${inter.variable} h-full antialiased font-sans`}
     >
-      <body className="min-h-full flex flex-col bg-white text-gray-900">
-        {children}
-        <InstallBanner />
+      <body className="min-h-full flex flex-col bg-canvas text-ink">
+        <ThemeProvider>
+          {children}
+          <InstallBanner />
+        </ThemeProvider>
       </body>
     </html>
   );

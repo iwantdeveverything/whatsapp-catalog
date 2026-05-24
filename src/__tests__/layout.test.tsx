@@ -10,35 +10,55 @@ vi.mock("next/font/google", () => ({
   }),
 }));
 
-// Dynamic import after mock is set up
+// Mock next/headers — return "x-theme" header value
+vi.mock("next/headers", () => ({
+  headers: vi.fn().mockResolvedValue(
+    new Map([["x-theme", "shopify"]]),
+  ),
+}));
+
+// Dynamic import after mocks are set up
 const { default: RootLayout } = await import("@/app/layout");
 
 describe("RootLayout", () => {
-  it("renders children inside the layout", () => {
-    render(
-      <RootLayout>
-        <p>Catalog content goes here</p>
-      </RootLayout>,
-    );
+  it("renders children inside the layout", async () => {
+    const jsx = await RootLayout({
+      children: <p>Catalog content goes here</p>,
+    });
+    render(jsx);
     expect(screen.getByText("Catalog content goes here")).toBeInTheDocument();
   });
 
-  it("renders multiple children correctly", () => {
-    render(
-      <RootLayout>
-        <header>Header</header>
-        <main>Main content</main>
-        <footer>Footer</footer>
-      </RootLayout>,
-    );
+  it("renders multiple children correctly", async () => {
+    const jsx = await RootLayout({
+      children: (
+        <>
+          <header>Header</header>
+          <main>Main content</main>
+          <footer>Footer</footer>
+        </>
+      ),
+    });
+    render(jsx);
     expect(screen.getByText("Header")).toBeInTheDocument();
     expect(screen.getByText("Main content")).toBeInTheDocument();
     expect(screen.getByText("Footer")).toBeInTheDocument();
   });
 
-  it("renders without crashing with empty children", () => {
-    const { container } = render(<RootLayout>{null}</RootLayout>);
+  it("renders without crashing with empty children", async () => {
+    const jsx = await RootLayout({ children: null });
+    const { container } = render(jsx);
     expect(container).toBeTruthy();
+  });
+
+  it("sets data-theme on html element from x-theme header", async () => {
+    const jsx = await RootLayout({
+      children: <p>content</p>,
+    });
+    render(jsx);
+
+    const html = document.documentElement;
+    expect(html.dataset.theme).toBe("shopify");
   });
 });
 
