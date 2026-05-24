@@ -57,4 +57,74 @@ describe("ThemeProvider", () => {
     expect(screen.getByText("Header")).toBeInTheDocument();
     expect(screen.getByText("Main")).toBeInTheDocument();
   });
+
+  it("syncs meta theme-color to Shopify canvas color on mount", () => {
+    render(
+      <ThemeProvider>
+        <p>content</p>
+      </ThemeProvider>,
+    );
+
+    const meta = document.querySelector<HTMLMetaElement>(
+      'meta[name="theme-color"]',
+    );
+    expect(meta).not.toBeNull();
+    expect(meta!.content).toBe("#FFFFFF");
+  });
+
+  it("updates meta theme-color when store theme changes to a dark theme", () => {
+    render(
+      <ThemeProvider>
+        <p>content</p>
+      </ThemeProvider>,
+    );
+
+    act(() => {
+      useCatalogStore.getState().setTheme("spotify");
+    });
+
+    const meta = document.querySelector<HTMLMetaElement>(
+      'meta[name="theme-color"]',
+    );
+    expect(meta).not.toBeNull();
+    // Spotify canvas is #191414
+    expect(meta!.content).toBe("#191414");
+  });
+
+  it("updates meta theme-color when store theme changes to a light theme", () => {
+    render(
+      <ThemeProvider>
+        <p>content</p>
+      </ThemeProvider>,
+    );
+
+    act(() => {
+      useCatalogStore.getState().setTheme("figma");
+    });
+
+    const meta = document.querySelector<HTMLMetaElement>(
+      'meta[name="theme-color"]',
+    );
+    expect(meta).not.toBeNull();
+    // Figma canvas is #FFFFFF
+    expect(meta!.content).toBe("#FFFFFF");
+  });
+
+  it("syncs store from DOM data-theme on mount when SSR set a different theme", () => {
+    // Simulate SSR having set data-theme="apple"
+    document.documentElement.dataset.theme = "apple";
+    // Store defaults to shopify
+    useCatalogStore.setState({ currentTheme: "shopify" });
+
+    render(
+      <ThemeProvider>
+        <p>content</p>
+      </ThemeProvider>,
+    );
+
+    // Store should now be synced to match the DOM (SSR-provided theme)
+    expect(useCatalogStore.getState().currentTheme).toBe("apple");
+    // DOM should preserve the SSR theme, not reset to shopify
+    expect(document.documentElement.dataset.theme).toBe("apple");
+  });
 });
