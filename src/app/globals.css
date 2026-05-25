@@ -270,6 +270,8 @@
   --color-primary: var(--theme-primary);
   --color-onPrimary: var(--theme-onPrimary);
   --color-accent: var(--theme-accent);
+  --color-danger: var(--theme-accent);
+  --color-onDanger: var(--theme-onPrimary);
   --font-sans: var(--font-inter);
 }
 
