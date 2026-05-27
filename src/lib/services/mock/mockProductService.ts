@@ -77,8 +77,10 @@ export const mockProductService: IProductService = {
   async list(filters?: ProductFilters): Promise<ProductListResult> {
     let filtered = [...products];
 
-    // Filter by active status — always exclude inactive by default
-    filtered = filtered.filter((p) => p.isActive);
+    // Filter by active status
+    if (!filters?.includeInactive) {
+      filtered = filtered.filter((p) => p.isActive);
+    }
 
     // Search by name (case-insensitive)
     if (filters?.search && filters.search.trim() !== "") {

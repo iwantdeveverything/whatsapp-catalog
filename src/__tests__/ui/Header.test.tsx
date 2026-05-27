@@ -22,9 +22,7 @@ vi.mock("@/lib/stores/authStore", () => ({
 }));
 
 // Wrapper with sidebar context
-function HeaderWrapper({ pathname = "/admin/dashboard" }: { pathname?: string }) {
-  mockPathname = pathname;
-
+function HeaderWrapper() {
   return (
     <SidebarProvider>
       <Header />
@@ -35,44 +33,39 @@ function HeaderWrapper({ pathname = "/admin/dashboard" }: { pathname?: string })
 describe("Header", () => {
   beforeEach(() => {
     mockLogout.mockClear();
+    mockPathname = "/admin/dashboard";
   });
 
   // ─── breadcrumb ─────────────────────────────────────────
 
   it("shows the current page name as breadcrumb", () => {
-    render(<HeaderWrapper pathname="/admin/dashboard" />);
+    mockPathname = "/admin/dashboard";
+    render(<HeaderWrapper />);
 
     expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
   });
 
   it("shows Products in breadcrumb when on products page", () => {
-    render(<HeaderWrapper pathname="/admin/products" />);
-
+    mockPathname = "/admin/products";
+    render(<HeaderWrapper />);
     expect(screen.getByText(/Products/i)).toBeInTheDocument();
   });
 
   it("shows Categories in breadcrumb when on categories page", () => {
-    render(<HeaderWrapper pathname="/admin/categories" />);
-
+    mockPathname = "/admin/categories";
+    render(<HeaderWrapper />);
     expect(screen.getByText(/Categories/i)).toBeInTheDocument();
   });
 
   it("shows Settings in breadcrumb when on settings page", () => {
-    render(<HeaderWrapper pathname="/admin/settings" />);
-
+    mockPathname = "/admin/settings";
+    render(<HeaderWrapper />);
     expect(screen.getByText(/Settings/i)).toBeInTheDocument();
   });
 
   // ─── logout ─────────────────────────────────────────────
 
-  it("renders a logout button", () => {
-    render(<HeaderWrapper />);
-
-    const logoutButton = screen.getByRole("button", { name: /Logout/i });
-    expect(logoutButton).toBeInTheDocument();
-  });
-
-  it("calls authStore.logout when logout button is clicked", async () => {
+  it("calls logout store method when logout button is clicked", async () => {
     const user = userEvent.setup();
     render(<HeaderWrapper />);
 

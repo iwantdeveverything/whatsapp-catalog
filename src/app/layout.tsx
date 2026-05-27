@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import "./globals.css";
 import { InstallBanner } from "@/components/install-banner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ToastProvider, ToastContainer } from "@/components/ui/Toast";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -49,10 +50,13 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-canvas text-ink">
-        <ThemeProvider>
-          {children}
-          <InstallBanner />
-        </ThemeProvider>
+        <ToastProvider>
+          <ThemeProvider>
+            {children}
+            <InstallBanner />
+          </ThemeProvider>
+          <ToastContainer />
+        </ToastProvider>
       </body>
     </html>
   );

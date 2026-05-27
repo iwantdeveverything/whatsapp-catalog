@@ -49,11 +49,11 @@ export default function SettingsPage() {
   }, [fetchSettings]);
 
   // Hydrate form fields once settings arrive from the store
-  useEffect(() => {
-    if (settings) {
-      setValues(toFormValues(settings));
-    }
-  }, [settings]);
+  const [prevSettings, setPrevSettings] = useState(settings);
+  if (settings && settings !== prevSettings) {
+    setPrevSettings(settings);
+    setValues(toFormValues(settings));
+  }
 
   function update<K extends keyof SettingsFormValues>(
     key: K,

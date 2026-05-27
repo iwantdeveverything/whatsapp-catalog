@@ -92,7 +92,7 @@ describe("adminProductStore", () => {
     it("rejects invalid product data and sets error", async () => {
       // Missing required `name` field — cast to bypass TS
       await expect(
-        useAdminProductStore.getState().createProduct({ price: 10, category: "X" } as any),
+        useAdminProductStore.getState().createProduct({ price: 10, category: "X" } as unknown as Product),
       ).rejects.toThrow();
 
       const state = useAdminProductStore.getState();
@@ -137,7 +137,7 @@ describe("adminProductStore", () => {
   // ─── deleteProduct() ────────────────────────────────────
 
   describe("deleteProduct()", () => {
-    it("soft-deletes a product and removes it from the list", async () => {
+    it("soft-deletes a product and marks it as inactive", async () => {
       const created = await useAdminProductStore
         .getState()
         .createProduct({
@@ -148,10 +148,11 @@ describe("adminProductStore", () => {
 
       await useAdminProductStore.getState().deleteProduct(created.id);
 
-      // After soft-delete, the product should not appear in the active list
+      // After soft-delete, the product remains in the admin list but is inactive
       const state = useAdminProductStore.getState();
-      const ids = state.products.map((p: Product) => p.id);
-      expect(ids).not.toContain(created.id);
+      const deletedProduct = state.products.find((p: Product) => p.id === created.id);
+      expect(deletedProduct).toBeDefined();
+      expect(deletedProduct?.isActive).toBe(false);
     });
 
     it("throws when deleting non-existent product", async () => {

@@ -24,9 +24,7 @@ vi.mock("next/link", () => ({
 }));
 
 // Wrapper that provides Sidebar context
-function SidebarWrapper({ pathname = "/admin/dashboard" }: { pathname?: string }) {
-  mockPathname = pathname;
-
+function SidebarWrapper() {
   return (
     <SidebarProvider>
       <Sidebar />
@@ -51,6 +49,10 @@ function ToggleConsumer() {
 }
 
 describe("Sidebar", () => {
+  beforeEach(() => {
+    mockPathname = "/admin/dashboard";
+  });
+
   // ─── navigation items ───────────────────────────────────
 
   it("renders all navigation items", () => {
@@ -81,21 +83,24 @@ describe("Sidebar", () => {
   // ─── active route highlighting ──────────────────────────
 
   it("marks the active route with aria-current='page'", () => {
-    render(<SidebarWrapper pathname="/admin/dashboard" />);
+    mockPathname = "/admin/dashboard";
+    render(<SidebarWrapper />);
 
     const dashboardLink = screen.getByText("Dashboard").closest("a");
     expect(dashboardLink).toHaveAttribute("aria-current", "page");
   });
 
   it("does not mark inactive routes with aria-current", () => {
-    render(<SidebarWrapper pathname="/admin/dashboard" />);
+    mockPathname = "/admin/dashboard";
+    render(<SidebarWrapper />);
 
     const productsLink = screen.getByText("Products").closest("a");
     expect(productsLink).not.toHaveAttribute("aria-current", "page");
   });
 
   it("updates aria-current when pathname changes to products", () => {
-    render(<SidebarWrapper pathname="/admin/products" />);
+    mockPathname = "/admin/products";
+    render(<SidebarWrapper />);
 
     const productsLink = screen.getByText("Products").closest("a");
     expect(productsLink).toHaveAttribute("aria-current", "page");
