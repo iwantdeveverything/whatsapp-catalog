@@ -5,6 +5,7 @@ export interface ProductFilters {
   category?: string;
   sortBy?: "name" | "price";
   sortOrder?: "asc" | "desc";
+  includeInactive?: boolean;
 }
 
 export interface ProductListResult {
