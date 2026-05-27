@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { useDocumentTitle } from "@/lib/hooks/useDocumentTitle";
 import { useAdminProductStore } from "@/lib/stores/adminProductStore";
 import { useAdminCategoryStore } from "@/lib/stores/adminCategoryStore";
 
@@ -20,6 +21,7 @@ function StatCard({ label, value }: StatCardProps) {
 }
 
 export default function DashboardPage() {
+  useDocumentTitle("Dashboard");
   const { products, loading: productsLoading, fetchProducts } =
     useAdminProductStore();
   const { categories, loading: categoriesLoading, fetchCategories } =

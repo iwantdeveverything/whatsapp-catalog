@@ -1,5 +1,7 @@
 "use client";
 
+import { useDocumentTitle } from "@/lib/hooks/useDocumentTitle";
+
 import { useEffect, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAdminCategoryStore } from "@/lib/stores/adminCategoryStore";
@@ -8,6 +10,7 @@ import { CategoryForm } from "@/app/admin/categories/CategoryForm";
 import type { CategoryFormInput } from "@/lib/schemas";
 
 export default function EditCategoryPage() {
+  useDocumentTitle("Edit Category");
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const id = params?.id ?? "";

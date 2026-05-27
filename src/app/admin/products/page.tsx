@@ -1,5 +1,7 @@
 "use client";
 
+import { useDocumentTitle } from "@/lib/hooks/useDocumentTitle";
+
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useAdminProductStore } from "@/lib/stores/adminProductStore";
@@ -22,6 +24,7 @@ function formatPrice(price: Product["price"]): string {
 }
 
 export default function ProductsPage() {
+  useDocumentTitle("Products");
   const {
     products,
     loading,

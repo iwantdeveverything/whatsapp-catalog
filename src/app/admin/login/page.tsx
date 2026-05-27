@@ -1,5 +1,7 @@
 "use client";
 
+import { useDocumentTitle } from "@/lib/hooks/useDocumentTitle";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginSchema } from "@/lib/schemas";
@@ -7,7 +9,8 @@ import { useAuthStore } from "@/lib/stores/authStore";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
-export function LoginPage() {
+export default function LoginPage() {
+  useDocumentTitle("Login");
   const router = useRouter();
   const login = useAuthStore((s) => s.login);
 
@@ -84,5 +87,3 @@ export function LoginPage() {
     </div>
   );
 }
-
-export default LoginPage;

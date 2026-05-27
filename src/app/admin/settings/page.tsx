@@ -1,5 +1,7 @@
 "use client";
 
+import { useDocumentTitle } from "@/lib/hooks/useDocumentTitle";
+
 import { useEffect, useState, type FormEvent } from "react";
 import { useSettingsStore } from "@/lib/stores/settingsStore";
 import { useToast } from "@/components/ui/Toast";
@@ -33,6 +35,7 @@ function toFormValues(settings: SettingsInput | null): SettingsFormValues {
 }
 
 export default function SettingsPage() {
+  useDocumentTitle("Settings");
   const { settings, loading, fetchSettings, saveSettings } = useSettingsStore();
   const { addToast } = useToast();
 

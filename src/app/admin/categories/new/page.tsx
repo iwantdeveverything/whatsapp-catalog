@@ -1,5 +1,7 @@
 "use client";
 
+import { useDocumentTitle } from "@/lib/hooks/useDocumentTitle";
+
 import { useRouter } from "next/navigation";
 import { useAdminCategoryStore } from "@/lib/stores/adminCategoryStore";
 import { useToast } from "@/components/ui/Toast";
@@ -7,6 +9,7 @@ import { CategoryForm } from "@/app/admin/categories/CategoryForm";
 import type { CategoryFormInput } from "@/lib/schemas";
 
 export default function NewCategoryPage() {
+  useDocumentTitle("New Category");
   const router = useRouter();
   const { createCategory, loading } = useAdminCategoryStore();
   const { addToast } = useToast();

@@ -1,5 +1,7 @@
 "use client";
 
+import { useDocumentTitle } from "@/lib/hooks/useDocumentTitle";
+
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useAdminCategoryStore } from "@/lib/stores/adminCategoryStore";
@@ -12,6 +14,7 @@ import type { Category } from "@/lib/services/interfaces";
 type CategoryRow = Category & Record<string, unknown>;
 
 export default function CategoriesPage() {
+  useDocumentTitle("Categories");
   const {
     categories,
     loading,

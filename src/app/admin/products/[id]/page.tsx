@@ -1,5 +1,7 @@
 "use client";
 
+import { useDocumentTitle } from "@/lib/hooks/useDocumentTitle";
+
 import { useEffect, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAdminProductStore } from "@/lib/stores/adminProductStore";
@@ -9,6 +11,7 @@ import { ProductForm } from "@/app/admin/products/ProductForm";
 import type { ProductFormInput } from "@/lib/schemas";
 
 export default function EditProductPage() {
+  useDocumentTitle("Edit Product");
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const id = params?.id ?? "";
