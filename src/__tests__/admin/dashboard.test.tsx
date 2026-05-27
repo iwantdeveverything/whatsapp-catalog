@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
-import DashboardPage from "@/app/(admin)/dashboard/page";
+import DashboardPage from "@/app/admin/dashboard/page";
 
 // Mock the stores
 const mockProductStore = {

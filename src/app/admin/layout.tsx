@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const isStandalone = pathname === "/login";
+  const isStandalone = pathname === "/admin/login";
 
   return (
     <SidebarProvider>

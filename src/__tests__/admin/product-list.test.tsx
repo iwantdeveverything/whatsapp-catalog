@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ProductsPage from "@/app/(admin)/products/page";
+import ProductsPage from "@/app/admin/products/page";
 import type { Product } from "@/lib/schemas";
 
 // ── Store mocks ────────────────────────────────────────────

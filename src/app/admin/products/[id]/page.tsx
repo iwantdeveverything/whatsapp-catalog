@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useAdminProductStore } from "@/lib/stores/adminProductStore";
 import { useAdminCategoryStore } from "@/lib/stores/adminCategoryStore";
 import { useToast } from "@/components/ui/Toast";
-import { ProductForm } from "@/app/(admin)/products/ProductForm";
+import { ProductForm } from "@/app/admin/products/ProductForm";
 import type { ProductFormInput } from "@/lib/schemas";
 
 export default function EditProductPage() {

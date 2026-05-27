@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import SettingsPage from "@/app/(admin)/settings/page";
+import SettingsPage from "@/app/admin/settings/page";
 import type { SettingsInput } from "@/lib/schemas";
 
 // ── Mocks ──────────────────────────────────────────────────

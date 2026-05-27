@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import EditProductPage from "@/app/(admin)/products/[id]/page";
+import EditProductPage from "@/app/admin/products/[id]/page";
 import type { Product } from "@/lib/schemas";
 
 // ── Mocks ──────────────────────────────────────────────────
