@@ -38,6 +38,15 @@ export function resolveThemeFromCookie(cookieHeader: string | null): string {
 }
 
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/admin/") && pathname !== "/admin/login") {
+    const adminToken = request.cookies.get("admin-token")?.value;
+    if (!adminToken) {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+  }
+
   const cookieHeader = request.headers.get("cookie");
   const theme = resolveThemeFromCookie(cookieHeader);
 
