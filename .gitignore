@@ -43,3 +43,13 @@ next-env.d.ts
 # Test artifacts
 playwright-report/
 test-results/
+
+# SDD artifacts (local planning)
+sdd/
+
+# Tooling caches
+.atl/
+.antigravitycli/
+
+# Serwist generated dev workers
+public/swe-worker-*.js
