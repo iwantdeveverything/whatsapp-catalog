@@ -50,29 +50,49 @@ describe("resolveThemeFromCookie", () => {
 });
 
 describe("middleware", () => {
-  it("forces luxury theme on public routes regardless of cookie", () => {
+  // The middleware forwards the resolved theme UPSTREAM to Server Components via
+  // `NextResponse.next({ request: { headers } })`. Next.js encodes forwarded
+  // request headers on the returned NextResponse as
+  // `x-middleware-request-<name>` (with `x-middleware-override-headers` listing
+  // the overridden keys). That forwarded value — NOT a client-facing response
+  // header — is the SSR source of truth that layout.tsx reads via headers().
+  const forwardedTheme = (res: NextResponse): string | null =>
+    res.headers.get("x-middleware-request-x-theme");
+
+  it("forwards luxury theme upstream on public routes regardless of cookie", () => {
     const req = new NextRequest("http://localhost:3000/");
     req.headers.set("cookie", "theme=shopify");
     const res = middleware(req);
-    expect(res.headers.get("x-theme")).toBe("luxury");
+    expect(forwardedTheme(res)).toBe("luxury");
+    expect(res.headers.get("x-middleware-override-headers")).toContain(
+      "x-theme",
+    );
   });
 
-  it("sets user-selected theme on /admin routes", () => {
+  it("forwards user-selected theme upstream on /admin routes", () => {
     const req = new NextRequest("http://localhost:3000/admin/dashboard");
     // Admin routes require admin-token cookie to bypass redirect
     req.cookies.set("admin-token", "valid-token");
     req.headers.set("cookie", "theme=shopify; admin-token=valid-token");
-    
+
     const res = middleware(req);
-    // Since NextRequest handles cookies internally, setting it via headers.set or cookies.set should work.
-    expect(res.headers.get("x-theme")).toBe("shopify");
+    expect(forwardedTheme(res)).toBe("shopify");
   });
 
-  it("defaults to shopify theme on /admin routes if no theme cookie", () => {
+  it("forwards default (shopify) theme upstream on /admin routes if no theme cookie", () => {
     const req = new NextRequest("http://localhost:3000/admin/dashboard");
     req.cookies.set("admin-token", "valid-token");
     const res = middleware(req);
-    expect(res.headers.get("x-theme")).toBe("shopify");
+    expect(forwardedTheme(res)).toBe("shopify");
+  });
+
+  it("rejects a spoofed x-theme request header on public routes (forwards luxury)", () => {
+    const req = new NextRequest("http://localhost:3000/");
+    // A malicious client tries to force a non-luxury theme by supplying the
+    // internal SSR header itself. The middleware must overwrite it.
+    req.headers.set("x-theme", "nike");
+    const res = middleware(req);
+    expect(forwardedTheme(res)).toBe("luxury");
   });
 
   it("redirects unauthenticated users from /admin routes", () => {
@@ -82,11 +102,11 @@ describe("middleware", () => {
     expect(res.headers.get("location")).toBe("http://localhost:3000/admin/login");
   });
 
-  it("allows access to /admin/login without token and sets theme", () => {
+  it("allows access to /admin/login without token and forwards theme", () => {
     const req = new NextRequest("http://localhost:3000/admin/login");
     req.headers.set("cookie", "theme=nike");
     const res = middleware(req);
     expect(res.status).toBe(200); // Or undefined/passthrough, but it returns NextResponse.next()
-    expect(res.headers.get("x-theme")).toBe("nike");
+    expect(forwardedTheme(res)).toBe("nike");
   });
 });

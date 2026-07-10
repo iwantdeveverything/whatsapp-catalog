@@ -69,12 +69,13 @@ describe("middleware admin guard", () => {
   });
 
   it("preserves existing theme cookie logic after admin check", () => {
-    // Add theme cookie to header directly since makeRequest uses NextRequest which handles cookies
+    // The resolved theme is forwarded UPSTREAM to Server Components as
+    // `x-middleware-request-x-theme`, not as a client-facing response header.
     const req = makeRequest("/admin/dashboard", { "admin-token": "mock-jwt-token" });
     req.headers.set("cookie", "theme=nike");
     const res = middleware(req);
 
-    expect(res.headers.get("x-theme")).toBe("nike");
+    expect(res.headers.get("x-middleware-request-x-theme")).toBe("nike");
   });
 
   it("forces luxury theme for non-admin routes", () => {
@@ -82,6 +83,6 @@ describe("middleware admin guard", () => {
     req.headers.set("cookie", "theme=shopify"); // Even if cookie is shopify, should force luxury
     const res = middleware(req);
 
-    expect(res.headers.get("x-theme")).toBe("luxury");
+    expect(res.headers.get("x-middleware-request-x-theme")).toBe("luxury");
   });
 });

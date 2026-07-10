@@ -23,7 +23,7 @@ describe("ThemeProvider", () => {
 
   it("applies data-theme='shopify' on document element on mount (admin)", () => {
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="shopify">
         <p>content</p>
       </ThemeProvider>,
     );
@@ -33,7 +33,7 @@ describe("ThemeProvider", () => {
 
   it("updates data-theme when store theme changes (admin)", () => {
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="shopify">
         <p>content</p>
       </ThemeProvider>,
     );
@@ -47,7 +47,7 @@ describe("ThemeProvider", () => {
 
   it("renders children", () => {
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="shopify">
         <h1>Settings</h1>
       </ThemeProvider>,
     );
@@ -57,7 +57,7 @@ describe("ThemeProvider", () => {
 
   it("renders multiple children", () => {
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="shopify">
         <header>Header</header>
         <main>Main</main>
       </ThemeProvider>,
@@ -69,7 +69,7 @@ describe("ThemeProvider", () => {
 
   it("syncs meta theme-color to Shopify canvas color on mount (admin)", () => {
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="shopify">
         <p>content</p>
       </ThemeProvider>,
     );
@@ -83,7 +83,7 @@ describe("ThemeProvider", () => {
 
   it("updates meta theme-color when store theme changes to a dark theme (admin)", () => {
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="shopify">
         <p>content</p>
       </ThemeProvider>,
     );
@@ -102,7 +102,7 @@ describe("ThemeProvider", () => {
 
   it("updates meta theme-color when store theme changes to a light theme (admin)", () => {
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="shopify">
         <p>content</p>
       </ThemeProvider>,
     );
@@ -119,52 +119,65 @@ describe("ThemeProvider", () => {
     expect(meta!.content).toBe("#FFFFFF");
   });
 
-  it("syncs store from DOM data-theme on mount when SSR set a different theme (admin)", () => {
-    // Simulate SSR having set data-theme="apple"
-    document.documentElement.dataset.theme = "apple";
-    // Store defaults to shopify
+  it("seeds the store from the ssrTheme prop on first mount when it differs (admin)", () => {
+    // SSR resolved "apple" from the admin cookie; the store still holds its
+    // default. The provider must seed the store from the SSR-resolved PROP —
+    // NOT from the live DOM (which is spoofable / pollutable by soft-navs).
     useCatalogStore.setState({ currentTheme: "shopify" });
 
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="apple">
         <p>content</p>
       </ThemeProvider>,
     );
 
-    // Store should now be synced to match the DOM (SSR-provided theme)
+    // Store synced to the SSR-provided theme
     expect(useCatalogStore.getState().currentTheme).toBe("apple");
-    // DOM should preserve the SSR theme, not reset to shopify
+    // DOM reflects the store (admin apply-effect)
     expect(document.documentElement.dataset.theme).toBe("apple");
+  });
+
+  it("ignores a polluted DOM data-theme and trusts the ssrTheme prop (admin)", () => {
+    // A stale/pollutable DOM value must NOT be treated as SSR truth.
+    document.documentElement.dataset.theme = "luxury";
+    useCatalogStore.setState({ currentTheme: "shopify" });
+
+    render(
+      <ThemeProvider ssrTheme="vercel">
+        <p>content</p>
+      </ThemeProvider>,
+    );
+
+    // Seeded from the prop, not the polluted DOM
+    expect(useCatalogStore.getState().currentTheme).toBe("vercel");
+    expect(document.documentElement.dataset.theme).toBe("vercel");
   });
 
   // ── Public routes: luxury-only, SSR-forced, no store clobber ──
 
-  it("does NOT overwrite the SSR-forced data-theme on public routes", () => {
+  it("does NOT overwrite the store on public routes", () => {
     mockPathname = "/";
     // SSR forced luxury on the public route
-    document.documentElement.dataset.theme = "luxury";
-    // Store still holds its default (shopify) — it must NOT clobber the DOM
     useCatalogStore.setState({ currentTheme: "shopify" });
 
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="luxury">
         <p>content</p>
       </ThemeProvider>,
     );
 
-    // The SSR-forced luxury theme must survive
+    // The public apply-effect asserts luxury on the DOM
     expect(document.documentElement.dataset.theme).toBe("luxury");
-    // The store must not be forced to change either
+    // The store must not be forced to change
     expect(useCatalogStore.getState().currentTheme).toBe("shopify");
   });
 
-  it("does not clobber public data-theme even when store changes", () => {
+  it("asserts luxury on the DOM on public routes even when store changes", () => {
     mockPathname = "/";
-    document.documentElement.dataset.theme = "luxury";
     useCatalogStore.setState({ currentTheme: "shopify" });
 
     render(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="luxury">
         <p>content</p>
       </ThemeProvider>,
     );
@@ -177,20 +190,37 @@ describe("ThemeProvider", () => {
     expect(document.documentElement.dataset.theme).toBe("luxury");
   });
 
-  it("resets a stale admin data-theme to luxury on soft-nav to a public route", () => {
-    // Simulate admin having written a non-luxury theme to the DOM, then a
-    // client-side soft navigation to a public route.
-    mockPathname = "/admin/products";
-    document.documentElement.dataset.theme = "figma";
-    useCatalogStore.setState({ currentTheme: "figma" });
+  it("resets the meta theme-color to the luxury canvas on public routes", () => {
+    mockPathname = "/";
 
-    const { rerender } = render(
-      <ThemeProvider>
+    render(
+      <ThemeProvider ssrTheme="luxury">
         <p>content</p>
       </ThemeProvider>,
     );
 
-    // Admin left "figma" on the DOM
+    const meta = document.querySelector<HTMLMetaElement>(
+      'meta[name="theme-color"]',
+    );
+    expect(meta).not.toBeNull();
+    // Luxury espresso-black canvas — resets mobile browser chrome on
+    // admin -> public soft-nav.
+    expect(meta!.content).toBe("#0F0D0C");
+  });
+
+  it("resets a stale admin data-theme to luxury on soft-nav to a public route", () => {
+    // Simulate admin having written a non-luxury theme to the DOM, then a
+    // client-side soft navigation to a public route.
+    mockPathname = "/admin/products";
+    useCatalogStore.setState({ currentTheme: "figma" });
+
+    const { rerender } = render(
+      <ThemeProvider ssrTheme="figma">
+        <p>content</p>
+      </ThemeProvider>,
+    );
+
+    // Admin drives "figma" onto the DOM from the store
     expect(document.documentElement.dataset.theme).toBe("figma");
 
     // Soft-nav to a public route: ThemeProvider must assert luxury
@@ -198,11 +228,47 @@ describe("ThemeProvider", () => {
       mockPathname = "/";
     });
     rerender(
-      <ThemeProvider>
+      <ThemeProvider ssrTheme="figma">
         <p>content</p>
       </ThemeProvider>,
     );
 
     expect(document.documentElement.dataset.theme).toBe("luxury");
+  });
+
+  it("does NOT clobber the operator's admin theme on a public -> admin soft-nav (reverse leak)", () => {
+    // Reproduces HIGH #2: ThemeProvider mounts once in the root layout and
+    // survives client navigation. Mount first on a PUBLIC route where the
+    // store already holds the operator's persisted admin theme ("vercel").
+    mockPathname = "/";
+    useCatalogStore.setState({ currentTheme: "vercel" });
+
+    const { rerender } = render(
+      // ssrTheme reflects the admin cookie value; on the public mount it must
+      // not be seeded into the store.
+      <ThemeProvider ssrTheme="vercel">
+        <p>content</p>
+      </ThemeProvider>,
+    );
+
+    // Public apply-effect writes luxury onto the DOM.
+    expect(document.documentElement.dataset.theme).toBe("luxury");
+    // Store is untouched on the public route.
+    expect(useCatalogStore.getState().currentTheme).toBe("vercel");
+
+    // Soft-nav public -> admin: NO SSR reseed happens. The stale DOM "luxury"
+    // must NOT be copied into the store.
+    act(() => {
+      mockPathname = "/admin/products";
+    });
+    rerender(
+      <ThemeProvider ssrTheme="vercel">
+        <p>content</p>
+      </ThemeProvider>,
+    );
+
+    // The operator's persisted theme survives — no reverse leak.
+    expect(useCatalogStore.getState().currentTheme).toBe("vercel");
+    expect(document.documentElement.dataset.theme).toBe("vercel");
   });
 });

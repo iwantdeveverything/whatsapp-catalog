@@ -5,6 +5,7 @@ import "./globals.css";
 import { InstallBanner } from "@/components/install-banner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider, ToastContainer } from "@/components/ui/Toast";
+import { ALLOWED_THEMES } from "@/middleware";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -37,7 +38,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headersList = await headers();
-  const theme = headersList.get("x-theme") || "shopify";
+  // The middleware forwards the SSR-resolved theme upstream as `x-theme`.
+  // Validate against the allowlist and fall back to the public luxury default
+  // (never light "shopify"), so a missing/spoofed value can't downgrade the
+  // public catalog chrome or flash the wrong theme.
+  const raw = headersList.get("x-theme");
+  const theme = raw && ALLOWED_THEMES.includes(raw) ? raw : "luxury";
 
   return (
     <html
@@ -62,7 +68,7 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-canvas text-ink">
         <ToastProvider>
-          <ThemeProvider>
+          <ThemeProvider ssrTheme={theme}>
             {children}
             <InstallBanner />
           </ThemeProvider>
