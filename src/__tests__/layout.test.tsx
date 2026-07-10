@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { metadata } from "@/app/layout";
+import { metadata, viewport } from "@/app/layout";
 
 // Mock next/font/google — Inter() returns a simple config object
 vi.mock("next/font/google", () => ({
@@ -76,5 +76,13 @@ describe("RootLayout metadata", () => {
   it("includes Open Graph defaults", () => {
     expect(metadata.openGraph).toBeDefined();
     expect(metadata.openGraph?.siteName).toBe("Catálogo Digital");
+  });
+});
+
+describe("RootLayout viewport", () => {
+  it("exports a static dark theme-color for the public luxury chrome", () => {
+    // Public catalog is luxury-only; SSR chrome must be espresso black, not
+    // the default light. viewport.themeColor is the Next.js 16 API for this.
+    expect(viewport.themeColor).toBe("#0F0D0C");
   });
 });

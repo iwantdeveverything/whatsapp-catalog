@@ -51,12 +51,12 @@ export function Header() {
         </button>
 
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2">
-          <span className="text-muted text-sm">Admin</span>
-          <span className="text-muted text-sm" aria-hidden="true">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-3">
+          <span className="text-muted text-[10px] tracking-widest uppercase">Admin</span>
+          <span className="text-muted text-[10px]" aria-hidden="true">
             /
           </span>
-          <span className="text-ink text-sm font-medium">{pageLabel}</span>
+          <span className="text-ink text-xs tracking-widest uppercase">{pageLabel}</span>
         </nav>
       </div>
 

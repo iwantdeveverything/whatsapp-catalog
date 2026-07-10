@@ -15,7 +15,7 @@ export function ProductCard({ product }: { product: Product }) {
       href={`/${product.id}`}
       className="group block rounded-lg border border-hairline bg-canvas overflow-hidden hover:shadow-md transition-shadow"
     >
-      <div className="aspect-square relative bg-surface2">
+      <div className="relative bg-surface2 aspect-square luxury:aspect-[4/5]">
         <Image
           src={primaryImage}
           alt={product.name}
@@ -28,7 +28,7 @@ export function ProductCard({ product }: { product: Product }) {
         <span className="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-surface2 text-muted">
           {product.category}
         </span>
-        <h3 className="font-semibold text-sm text-ink line-clamp-2">
+        <h3 className="font-semibold text-sm text-ink line-clamp-2 luxury:font-serif">
           {product.name}
         </h3>
         <p className="text-sm font-bold text-ink">

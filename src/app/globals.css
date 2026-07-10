@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Ancestor-scoped luxury variant: matches any element inside [data-theme="luxury"]
+   (data-theme lives on <html>, set at SSR). Enables `luxury:` utilities. */
+@custom-variant luxury (&:where([data-theme="luxury"] *));
+
 /* ── Semantic theme tokens (fallback + Shopify default) ── */
 :root {
   --theme-canvas: #ffffff;
@@ -30,7 +34,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   Generated theme blocks — 14 curated themes from awesome-design-md
+   Generated theme blocks — 16 curated themes from awesome-design-md
    ══════════════════════════════════════════════════════════════════ */
 
 [data-theme="nike"] {
@@ -273,6 +277,7 @@
   --color-danger: var(--theme-accent);
   --color-onDanger: var(--theme-onPrimary);
   --font-sans: var(--font-inter);
+  --font-serif: var(--theme-font-serif, ui-serif, Georgia, serif);
 }
 
 /* ── Global defaults ── */
@@ -280,4 +285,21 @@ body {
   background: var(--theme-canvas);
   color: var(--theme-ink);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+[data-theme="luxury"] {
+  /* Luxury / Refined — Cormorant Garamond & Outfit */
+  --theme-font-family: "Outfit", sans-serif;
+  --theme-font-serif: "Cormorant Garamond", serif;
+  --theme-canvas: #0F0D0C; /* Espresso Black */
+  --theme-ink: #F9F6F0; /* Cream / Ivory */
+  --theme-surface1: #1A1715;
+  --theme-surface2: #24201D;
+  --theme-surface3: #302B27;
+  --theme-hairline: #3D3732;
+  --theme-muted: #8A7E73;
+  --theme-primary: #D4AF37; /* Muted Gold / Brass */
+  --theme-onPrimary: #0F0D0C;
+  --theme-accent: #C48B62; /* Copper */
+  --theme-surfaceHover: #302B27;
 }

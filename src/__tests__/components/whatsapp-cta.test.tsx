@@ -116,4 +116,23 @@ describe("WhatsAppCta", () => {
     // Should render an empty fragment or nothing visible
     expect(container.firstChild).toBeNull();
   });
+
+  // --- Luxury Theme overrides ---
+  // Luxury styling is driven purely by the `luxury:` Tailwind variant
+  // (ancestor-scoped to [data-theme="luxury"]). The component no longer reads
+  // the Zustand store; the base green style + luxury overrides coexist in markup.
+  it("applies premium minimalist luxury variant classes on the CTA", () => {
+    const product = createProduct({
+      contact: { whatsapp: "5491112345678" },
+    });
+
+    render(<div data-theme="luxury"><WhatsAppCta product={product} /></div>);
+    const link = screen.getByRole("link", { name: /consultar por whatsapp/i });
+
+    // Base (non-luxury) style present, luxury variant overrides layered on top
+    expect(link).toHaveClass("bg-green-600");
+    expect(link).toHaveClass("luxury:bg-ink");
+    expect(link).toHaveClass("luxury:text-canvas");
+    expect(link).toHaveClass("luxury:rounded-none");
+  });
 });

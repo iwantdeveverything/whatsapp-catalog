@@ -104,8 +104,8 @@ export function Sidebar() {
         )}
       >
         {/* Sidebar header */}
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-hairline">
-          <span className="text-lg font-semibold text-ink">Admin</span>
+        <div className="flex items-center justify-center px-6 py-8 border-b border-hairline">
+          <span className="text-xl font-serif text-ink uppercase tracking-[0.3em] font-light">Boutique</span>
         </div>
 
         {/* Navigation list */}
@@ -119,25 +119,24 @@ export function Sidebar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-3 rounded-md text-sm font-medium transition-colors min-h-[44px]",
-                      "hover:bg-surface2",
-                      isActive && "bg-primary/10 border-l-2 border-primary text-ink",
-                      !isActive && "text-muted",
+                      "flex items-center gap-4 px-6 py-4 transition-colors min-h-[44px]",
+                      "hover:bg-transparent hover:text-primary",
+                      isActive ? "text-primary border-r-2 border-primary" : "text-muted",
                     )}
                     aria-current={isActive ? "page" : undefined}
                     onClick={close}
                   >
                     <span
                       className={cn(
-                        "flex items-center justify-center w-8 h-8 rounded-md text-sm font-bold",
+                        "flex items-center justify-center w-6 h-6 text-xs font-serif font-light border border-hairline",
                         isActive
-                          ? "bg-primary text-onPrimary"
-                          : "bg-surface2 text-muted",
+                          ? "border-primary text-primary"
+                          : "text-muted border-hairline",
                       )}
                     >
                       {item.icon}
                     </span>
-                    <span>{item.label}</span>
+                    <span className="text-xs uppercase tracking-[0.2em]">{item.label}</span>
                   </Link>
                 </li>
               );

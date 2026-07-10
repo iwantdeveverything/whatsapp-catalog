@@ -74,11 +74,11 @@ export function DataTable<T extends Record<string, unknown>>({
         {paginatedData.map((row, rowIndex) => (
           <div
             key={rowIndex}
-            className="rounded-lg border border-hairline bg-surface1 p-4 space-y-2"
+            className="border-b border-hairline py-4 space-y-3"
           >
             {columns.map((col) => (
-              <div key={col.key} className="flex justify-between gap-2">
-                <span className="text-muted text-sm min-w-[44px]">{col.label}:</span>
+              <div key={col.key} className="flex justify-between gap-2 items-center">
+                <span className="text-muted text-[10px] tracking-widest uppercase">{col.label}</span>
                 <span className="text-ink text-sm text-right">
                   {col.render
                     ? col.render(row[col.key], row)
@@ -101,8 +101,8 @@ export function DataTable<T extends Record<string, unknown>>({
                   <th
                     key={col.key}
                     className={cn(
-                      "px-4 py-3 text-left text-sm font-medium text-muted",
-                      isSortable && "cursor-pointer select-none hover:text-ink min-h-[44px]",
+                      "px-4 py-4 text-left text-[10px] tracking-widest uppercase font-light text-muted",
+                      isSortable && "cursor-pointer select-none hover:text-ink min-h-[44px] transition-colors",
                     )}
                     onClick={() => isSortable && handleSort(col.key)}
                     role={isSortable ? "columnheader button" : "columnheader"}
@@ -118,10 +118,10 @@ export function DataTable<T extends Record<string, unknown>>({
             {paginatedData.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
-                className="border-b border-hairline hover:bg-surface1 transition-colors"
+                className="border-b border-hairline hover:bg-surface1/30 transition-colors"
               >
                 {columns.map((col) => (
-                  <td key={col.key} className="px-4 py-3 text-sm text-ink">
+                  <td key={col.key} className="px-4 py-5 text-sm text-ink">
                     {col.render
                       ? col.render(row[col.key], row)
                       : String(row[col.key] ?? "")}
@@ -135,23 +135,25 @@ export function DataTable<T extends Record<string, unknown>>({
 
       {/* Pagination controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-4 py-3 border-t border-hairline">
+        <div className="flex items-center justify-between px-4 py-6 border-t border-hairline mt-4">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
+            className="border-b border-transparent hover:border-ink px-0"
           >
-            Previous
+            Prev
           </Button>
-          <span className="text-sm text-muted">
-            Page {page} of {totalPages}
+          <span className="text-[10px] tracking-widest uppercase text-muted">
+            {page} / {totalPages}
           </span>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}
+            className="border-b border-transparent hover:border-ink px-0"
           >
             Next
           </Button>

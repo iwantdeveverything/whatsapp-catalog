@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { resolveThemeFromCookie } from "@/middleware";
+import { NextRequest, NextResponse } from "next/server";
+import { resolveThemeFromCookie, middleware } from "@/middleware";
 
 describe("resolveThemeFromCookie", () => {
   it('returns "shopify" when no cookie header is present', () => {
@@ -32,12 +33,12 @@ describe("resolveThemeFromCookie", () => {
     expect(resolveThemeFromCookie("theme=shopify")).toBe("shopify");
   });
 
-  it("accepts all 15 registered theme IDs", () => {
+  it("accepts all registered theme IDs including luxury", () => {
     const validThemes = [
       "shopify", "nike", "airbnb", "starbucks",
       "apple", "spotify", "tesla", "vercel",
       "linear", "supabase", "figma", "notion",
-      "stripe", "claude", "mistral",
+      "stripe", "claude", "mistral", "luxury",
     ];
     for (const themeId of validThemes) {
       expect(
@@ -45,5 +46,47 @@ describe("resolveThemeFromCookie", () => {
         `theme "${themeId}" should be accepted`,
       ).toBe(themeId);
     }
+  });
+});
+
+describe("middleware", () => {
+  it("forces luxury theme on public routes regardless of cookie", () => {
+    const req = new NextRequest("http://localhost:3000/");
+    req.headers.set("cookie", "theme=shopify");
+    const res = middleware(req);
+    expect(res.headers.get("x-theme")).toBe("luxury");
+  });
+
+  it("sets user-selected theme on /admin routes", () => {
+    const req = new NextRequest("http://localhost:3000/admin/dashboard");
+    // Admin routes require admin-token cookie to bypass redirect
+    req.cookies.set("admin-token", "valid-token");
+    req.headers.set("cookie", "theme=shopify; admin-token=valid-token");
+    
+    const res = middleware(req);
+    // Since NextRequest handles cookies internally, setting it via headers.set or cookies.set should work.
+    expect(res.headers.get("x-theme")).toBe("shopify");
+  });
+
+  it("defaults to shopify theme on /admin routes if no theme cookie", () => {
+    const req = new NextRequest("http://localhost:3000/admin/dashboard");
+    req.cookies.set("admin-token", "valid-token");
+    const res = middleware(req);
+    expect(res.headers.get("x-theme")).toBe("shopify");
+  });
+
+  it("redirects unauthenticated users from /admin routes", () => {
+    const req = new NextRequest("http://localhost:3000/admin/dashboard");
+    const res = middleware(req);
+    expect(res.status).toBe(307); // Next.js redirect is usually 307
+    expect(res.headers.get("location")).toBe("http://localhost:3000/admin/login");
+  });
+
+  it("allows access to /admin/login without token and sets theme", () => {
+    const req = new NextRequest("http://localhost:3000/admin/login");
+    req.headers.set("cookie", "theme=nike");
+    const res = middleware(req);
+    expect(res.status).toBe(200); // Or undefined/passthrough, but it returns NextResponse.next()
+    expect(res.headers.get("x-theme")).toBe("nike");
   });
 });

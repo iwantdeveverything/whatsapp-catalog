@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
@@ -24,6 +24,13 @@ export const metadata: Metadata = {
   },
 };
 
+// Public catalog is luxury-only: default the browser chrome (mobile theme-color)
+// to the luxury espresso-black canvas so SSR pages don't flash light chrome.
+// Admin routes override this at runtime via ThemeProvider's dynamic meta sync.
+export const viewport: Viewport = {
+  themeColor: "#0F0D0C",
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -39,7 +46,7 @@ export default async function RootLayout({
       className={`${inter.variable} h-full antialiased font-sans`}
     >
       <head>
-        {/* Google Fonts for theme registry (Inter + Geist) */}
+        {/* Google Fonts for theme registry (Inter + Geist + Luxury) */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -47,6 +54,10 @@ export default async function RootLayout({
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap"
         />
       </head>
       <body className="min-h-full flex flex-col bg-canvas text-ink">

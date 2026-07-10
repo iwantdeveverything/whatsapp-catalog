@@ -12,8 +12,6 @@ import {
   type Column,
   type SortState,
 } from "@/components/ui/DataTable";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import type { Product } from "@/lib/schemas";
 
@@ -116,22 +114,21 @@ export default function ProductsPage() {
       key: "id",
       label: "Actions",
       render: (_value, row) => (
-        <div className="flex gap-2 justify-end">
+        <div className="flex gap-4 justify-end items-center">
           <Link
             href={`/admin/products/${row.id}`}
-            className="inline-flex items-center justify-center rounded-md border border-hairline bg-surface2 px-3 py-1.5 text-sm text-ink hover:bg-surface3 min-h-[44px]"
+            className="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors min-h-[44px] flex items-center"
             aria-label={`Edit ${row.name}`}
           >
             Edit
           </Link>
-          <Button
-            variant="danger"
-            size="sm"
+          <button
             onClick={() => requestDelete(row.id)}
+            className="text-xs uppercase tracking-widest text-accent hover:opacity-80 transition-opacity min-h-[44px] flex items-center"
             aria-label={`Delete ${row.name}`}
           >
             Delete
-          </Button>
+          </button>
         </div>
       ),
     },
@@ -139,27 +136,34 @@ export default function ProductsPage() {
 
   return (
     <div className="flex flex-col gap-6 py-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-ink">Products</h1>
+      <div className="flex items-end justify-between border-b border-hairline pb-4">
+        <div>
+          <span className="text-xs uppercase tracking-[0.2em] text-muted mb-2 block">Catalog Management</span>
+          <h1 className="text-4xl font-serif text-ink tracking-wide font-light">Inventory</h1>
+        </div>
         <Link
           href="/admin/products/new"
-          className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-onPrimary font-medium hover:opacity-90 min-h-[44px]"
+          className="inline-flex items-center justify-center border border-primary bg-primary px-8 py-3 text-xs uppercase tracking-widest text-onPrimary transition-all duration-300 hover:bg-transparent hover:text-primary min-h-[44px]"
         >
-          New Product
+          Add Item
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Input
-          label="Search"
-          placeholder="Search by name..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <div className="flex flex-col gap-1">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 pt-4">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="search-filter" className="text-xs uppercase tracking-widest text-muted">Search Collection</label>
+          <input
+            id="search-filter"
+            placeholder="Type to filter..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border-b border-hairline bg-transparent px-0 py-2 text-ink placeholder:text-muted focus:border-primary focus:outline-none min-h-[44px] transition-colors"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
           <label
             htmlFor="category-filter"
-            className="text-sm font-medium text-ink"
+            className="text-xs uppercase tracking-widest text-muted"
           >
             Category
           </label>
@@ -167,9 +171,9 @@ export default function ProductsPage() {
             id="category-filter"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="rounded-md border border-hairline bg-surface1 px-3 py-2 text-ink text-base min-h-[44px]"
+            className="border-b border-hairline bg-transparent px-0 py-2 text-ink focus:border-primary focus:outline-none min-h-[44px] transition-colors appearance-none"
           >
-            <option value="">All categories</option>
+            <option value="">All Categories</option>
             {categories.map((c) => (
               <option key={c.id} value={c.name}>
                 {c.name}

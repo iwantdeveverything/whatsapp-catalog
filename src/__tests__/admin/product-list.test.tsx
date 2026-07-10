@@ -110,7 +110,7 @@ describe("ProductsPage", () => {
 
   it("renders a link to create new product", () => {
     render(<ProductsPage />);
-    const link = screen.getByRole("link", { name: /new product/i });
+    const link = screen.getByRole("link", { name: /add item/i });
     expect(link).toHaveAttribute("href", "/admin/products/new");
   });
 

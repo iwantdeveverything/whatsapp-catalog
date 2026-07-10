@@ -69,10 +69,10 @@ describe("HomePage", () => {
     }
   });
 
-  it("renders a link to the settings page", () => {
+  // Public catalog is luxury-only: no theme-picker entry point is exposed.
+  it("does not render a link to the /ajustes theme picker", () => {
     render(<HomePage />);
-    const settingsLink = screen.getByRole("link", { name: /ajustes|tema/i });
-    expect(settingsLink).toBeInTheDocument();
-    expect(settingsLink).toHaveAttribute("href", "/ajustes");
+    const settingsLink = screen.queryByRole("link", { name: /ajustes|tema/i });
+    expect(settingsLink).not.toBeInTheDocument();
   });
 });

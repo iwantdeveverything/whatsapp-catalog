@@ -19,6 +19,7 @@ const ALLOWED_THEMES: string[] = [
   "stripe",
   "claude",
   "mistral",
+  "luxury",
 ];
 
 /**
@@ -51,7 +52,13 @@ export function middleware(request: NextRequest) {
   const theme = resolveThemeFromCookie(cookieHeader);
 
   const response = NextResponse.next();
-  response.headers.set("x-theme", theme);
+
+  // Force luxury theme for public routes
+  if (pathname.startsWith("/admin")) {
+    response.headers.set("x-theme", theme);
+  } else {
+    response.headers.set("x-theme", "luxury");
+  }
 
   return response;
 }

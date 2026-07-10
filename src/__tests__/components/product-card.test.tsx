@@ -131,4 +131,24 @@ describe("ProductCard", () => {
     renderWithTheme(<ProductCard product={product} />);
     expect(screen.getByText("$120.000")).toBeInTheDocument();
   });
+
+  // --- Luxury Theme Overrides ---
+  // Luxury styling is driven purely by the `luxury:` Tailwind variant, which is
+  // ancestor-scoped to [data-theme="luxury"] on <html> (set at SSR). The component
+  // is a server component and does NOT read the Zustand store.
+
+  it("applies luxury variant classes so the card styles under [data-theme=luxury]", () => {
+    const product = createProduct({ name: "Vestido Elegante", price: 150000 });
+
+    render(<div data-theme="luxury"><ProductCard product={product} /></div>);
+
+    const title = screen.getByText("Vestido Elegante");
+    // Serif is applied only when inside a luxury ancestor, via the variant class
+    expect(title).toHaveClass("luxury:font-serif");
+
+    const imageContainer = title.parentElement?.previousElementSibling;
+    // Base aspect stays square; luxury variant overrides it to 4/5
+    expect(imageContainer).toHaveClass("aspect-square");
+    expect(imageContainer).toHaveClass("luxury:aspect-[4/5]");
+  });
 });
