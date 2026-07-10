@@ -32,8 +32,8 @@ describe("Theme Registry", () => {
 
   // ── Size and uniqueness ──
 
-  it("contains exactly 15 curated themes", () => {
-    expect(AVAILABLE_THEMES).toHaveLength(15);
+  it("contains exactly 16 curated themes", () => {
+    expect(AVAILABLE_THEMES).toHaveLength(16);
   });
 
   it("has all unique theme IDs", () => {
@@ -142,6 +142,7 @@ describe("Theme Registry", () => {
     expect(ids).toContain("nike");
     expect(ids).toContain("airbnb");
     expect(ids).toContain("starbucks");
+    expect(ids).toContain("luxury");
   });
 
   it("includes well-known devtools themes", () => {
@@ -185,7 +186,7 @@ describe("Theme Registry", () => {
         (byCategory.get(theme.category) ?? 0) + 1,
       );
     }
-    expect(byCategory.get("ecommerce")).toBe(4);
+    expect(byCategory.get("ecommerce")).toBe(5);
     expect(byCategory.get("media")).toBe(3);
     expect(byCategory.get("devtools")).toBe(3);
     expect(byCategory.get("design")).toBe(2);

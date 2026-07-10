@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 import { InstallBanner } from "@/components/install-banner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider, ToastContainer } from "@/components/ui/Toast";
+import { ALLOWED_THEMES } from "@/middleware";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,13 +25,25 @@ export const metadata: Metadata = {
   },
 };
 
+// Public catalog is luxury-only: default the browser chrome (mobile theme-color)
+// to the luxury espresso-black canvas so SSR pages don't flash light chrome.
+// Admin routes override this at runtime via ThemeProvider's dynamic meta sync.
+export const viewport: Viewport = {
+  themeColor: "#0F0D0C",
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const headersList = await headers();
-  const theme = headersList.get("x-theme") || "shopify";
+  // The middleware forwards the SSR-resolved theme upstream as `x-theme`.
+  // Validate against the allowlist and fall back to the public luxury default
+  // (never light "shopify"), so a missing/spoofed value can't downgrade the
+  // public catalog chrome or flash the wrong theme.
+  const raw = headersList.get("x-theme");
+  const theme = raw && ALLOWED_THEMES.includes(raw) ? raw : "luxury";
 
   return (
     <html
@@ -39,7 +52,7 @@ export default async function RootLayout({
       className={`${inter.variable} h-full antialiased font-sans`}
     >
       <head>
-        {/* Google Fonts for theme registry (Inter + Geist) */}
+        {/* Google Fonts for theme registry (Inter + Geist + Luxury) */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -48,10 +61,14 @@ export default async function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"
         />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap"
+        />
       </head>
       <body className="min-h-full flex flex-col bg-canvas text-ink">
         <ToastProvider>
-          <ThemeProvider>
+          <ThemeProvider ssrTheme={theme}>
             {children}
             <InstallBanner />
           </ThemeProvider>

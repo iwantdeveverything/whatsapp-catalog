@@ -30,7 +30,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const products = getProductsByCategory(category);
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <main className="max-w-6xl mx-auto px-4 py-8 space-y-8 luxury:py-16">
       {/* Back link */}
       <Link
         href="/"
@@ -51,7 +51,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       </Link>
 
       {/* Category heading */}
-      <h1 className="text-3xl font-bold text-gray-900">{category}</h1>
+      <h1 className="text-3xl font-bold text-ink luxury:font-serif luxury:tracking-wide luxury:text-4xl">{category}</h1>
 
       {/* Product grid or empty state */}
       {products.length > 0 ? (

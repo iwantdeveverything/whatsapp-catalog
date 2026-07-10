@@ -36,9 +36,9 @@ describe("DataTable", () => {
     render(<DataTable columns={columns} data={sampleData} />);
 
     // Headers appear in both table thead AND mobile cards
-    expect(screen.getByText("Name")).toBeInTheDocument();
-    expect(screen.getByText("Category")).toBeInTheDocument();
-    expect(screen.getByText("Price")).toBeInTheDocument();
+    expect(screen.getAllByText("Name").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Category").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Price").length).toBeGreaterThan(0);
   });
 
   it("renders data rows with cell values in the table", () => {
@@ -181,13 +181,13 @@ describe("DataTable", () => {
   it("shows Page X of Y text", () => {
     render(<DataTable columns={columns} data={sampleData} itemsPerPage={2} />);
 
-    expect(screen.getByText(/Page 1 of 2/)).toBeInTheDocument();
+    expect(screen.getByText(/1 \/ 2/)).toBeInTheDocument();
   });
 
   it("previous button is disabled on first page", () => {
     render(<DataTable columns={columns} data={sampleData} itemsPerPage={2} />);
 
-    const prevButton = screen.getByText("Previous");
+    const prevButton = screen.getByText("Prev");
     expect(prevButton).toBeDisabled();
   });
 
@@ -204,7 +204,7 @@ describe("DataTable", () => {
     // Page 2 — Gamma and Delta
     assertValuePresent("Gamma");
     assertValuePresent("Delta");
-    expect(screen.getByText(/Page 2 of 2/)).toBeInTheDocument();
+    expect(screen.getByText(/2 \/ 2/)).toBeInTheDocument();
   });
 
   it("next button is disabled on last page", async () => {
@@ -221,10 +221,10 @@ describe("DataTable", () => {
     render(<DataTable columns={columns} data={sampleData} itemsPerPage={2} />);
 
     await user.click(screen.getByText("Next"));
-    await user.click(screen.getByText("Previous"));
+    await user.click(screen.getByText("Prev"));
 
     assertValuePresent("Alpha");
-    expect(screen.getByText(/Page 1 of 2/)).toBeInTheDocument();
+    expect(screen.getByText(/1 \/ 2/)).toBeInTheDocument();
   });
 
   // ─── responsive: mobile card view ───────────────────────
@@ -239,14 +239,14 @@ describe("DataTable", () => {
     render(<DataTable columns={columns} data={sampleData} itemsPerPage={10} />);
 
     // Both card view and table view exist in jsdom (CSS hides one on real browsers)
-    const nameLabels = screen.getAllByText("Name:");
-    expect(nameLabels.length).toBeGreaterThan(0);
+    const nameLabels = screen.getAllByText("Name");
+    expect(nameLabels.length).toBeGreaterThan(1); // 1 for header, more for cards
 
-    const categoryLabels = screen.getAllByText("Category:");
-    expect(categoryLabels.length).toBeGreaterThan(0);
+    const categoryLabels = screen.getAllByText("Category");
+    expect(categoryLabels.length).toBeGreaterThan(1);
 
-    const priceLabels = screen.getAllByText("Price:");
-    expect(priceLabels.length).toBeGreaterThan(0);
+    const priceLabels = screen.getAllByText("Price");
+    expect(priceLabels.length).toBeGreaterThan(1);
   });
 
   it("card view renders one card per row", () => {

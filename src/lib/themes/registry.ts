@@ -199,9 +199,23 @@ const MISTRAL_TK: ThemeTokens = {
   accent: "#F97316",
 };
 
+// Must match the [data-theme="luxury"] block in globals.css (single source of truth).
+const LUXURY_TK: ThemeTokens = {
+  canvas: "#0F0D0C", // Espresso Black
+  ink: "#F9F6F0", // Cream / Ivory
+  surface1: "#1A1715",
+  surface2: "#24201D",
+  surface3: "#302B27",
+  hairline: "#3D3732",
+  muted: "#8A7E73",
+  primary: "#D4AF37", // Muted Gold / Brass
+  onPrimary: "#0F0D0C",
+  accent: "#C48B62", // Copper
+};
+
 const BASE_URL = "https://github.com/voltagent/awesome-design-md";
 
-/** The curated register of 15 DESIGN.md themes. */
+/** The curated register of 16 DESIGN.md themes. */
 export const AVAILABLE_THEMES: ThemeDefinition[] = [
   {
     id: "shopify",
@@ -410,6 +424,20 @@ export const AVAILABLE_THEMES: ThemeDefinition[] = [
     },
     description: "Dark technical canvas with orange accent",
     metadata: { source: `${BASE_URL}/blob/main/design-md/mistral/DESIGN.md` },
+  },
+  {
+    id: "luxury",
+    name: "Luxury",
+    category: ThemeCategory.Ecommerce,
+    tokens: LUXURY_TK,
+    fonts: {
+      family: "Cormorant Garamond",
+      googleFontsUrl:
+        "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap",
+      fallback: "serif",
+    },
+    description: "Premium boutique aesthetic with serif typography",
+    metadata: { source: `${BASE_URL}/blob/main/design-md/luxury/DESIGN.md` },
   },
 ];
 

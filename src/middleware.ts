@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { DEFAULT_THEME } from "@/lib/themes/types";
 
 /** Themes that are allowed to be set via cookie. */
-const ALLOWED_THEMES: string[] = [
+export const ALLOWED_THEMES: string[] = [
   "shopify",
   "nike",
   "airbnb",
@@ -19,6 +19,7 @@ const ALLOWED_THEMES: string[] = [
   "stripe",
   "claude",
   "mistral",
+  "luxury",
 ];
 
 /**
@@ -50,10 +51,19 @@ export function middleware(request: NextRequest) {
   const cookieHeader = request.headers.get("cookie");
   const theme = resolveThemeFromCookie(cookieHeader);
 
-  const response = NextResponse.next();
-  response.headers.set("x-theme", theme);
+  // Resolve the SSR theme: operator-selected on admin routes, forced luxury on
+  // the public catalog.
+  const resolvedTheme = pathname.startsWith("/admin") ? theme : "luxury";
 
-  return response;
+  // Forward the resolved theme UPSTREAM to Server Components. Setting on a fresh
+  // copy of the incoming request headers via `NextResponse.next({ request })`
+  // is what actually reaches layout.tsx's `headers()`; a response header does
+  // NOT reach Server Components. Overwriting on the copied request headers also
+  // clobbers any client-supplied `x-theme`, closing the spoof vector.
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-theme", resolvedTheme);
+
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
 export const config = {

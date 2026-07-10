@@ -99,8 +99,11 @@ export function ProductForm({
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="flex flex-col gap-4 max-w-2xl"
+      className="flex flex-col gap-8 max-w-2xl bg-transparent border border-hairline p-8 md:p-12"
     >
+      <h2 className="text-3xl font-serif text-ink tracking-wide font-light border-b border-hairline pb-4 mb-4 uppercase">
+        Item Details
+      </h2>
       <Input
         label="Name"
         value={values.name}
@@ -108,10 +111,10 @@ export function ProductForm({
         error={errors.name}
       />
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <label
           htmlFor="product-description"
-          className="text-sm font-medium text-ink"
+          className="text-xs uppercase tracking-[0.2em] text-muted"
         >
           Description
         </label>
@@ -120,7 +123,7 @@ export function ProductForm({
           value={values.description}
           onChange={(e) => update("description", e.target.value)}
           rows={4}
-          className="rounded-md border border-hairline bg-surface1 px-3 py-2 text-ink text-base"
+          className="rounded-none border-b border-hairline bg-transparent px-0 py-2 text-ink text-base transition-colors focus:border-primary focus:outline-none resize-none"
         />
       </div>
 
@@ -133,10 +136,10 @@ export function ProductForm({
         error={errors.price}
       />
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <label
           htmlFor="product-category"
-          className="text-sm font-medium text-ink"
+          className="text-xs uppercase tracking-[0.2em] text-muted"
         >
           Category
         </label>
@@ -144,7 +147,7 @@ export function ProductForm({
           id="product-category"
           value={values.category}
           onChange={(e) => update("category", e.target.value)}
-          className="rounded-md border border-hairline bg-surface1 px-3 py-2 text-ink text-base min-h-[44px]"
+          className="rounded-none border-b border-hairline bg-transparent px-0 py-2 text-ink text-base min-h-[44px] transition-colors focus:border-primary focus:outline-none appearance-none"
         >
           <option value="">Select a category</option>
           {categories.map((c) => (
@@ -154,7 +157,7 @@ export function ProductForm({
           ))}
         </select>
         {errors.category && (
-          <p role="alert" className="text-sm text-danger">
+          <p role="alert" className="text-xs tracking-widest uppercase text-danger mt-1">
             {errors.category}
           </p>
         )}
@@ -182,26 +185,35 @@ export function ProductForm({
         error={errors.imageUrl}
       />
 
-      <label className="flex items-center gap-2 text-sm text-ink">
-        <input
-          type="checkbox"
-          checked={values.isActive}
-          onChange={(e) => update("isActive", e.target.checked)}
-          aria-label="Active"
-        />
-        Active
-      </label>
+      <div className="flex items-center gap-4 py-4 border-y border-hairline mt-4">
+        <label className="text-xs uppercase tracking-[0.2em] text-muted flex-grow">
+          Visibility Status
+        </label>
+        <label className="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            className="sr-only peer"
+            checked={values.isActive}
+            onChange={(e) => update("isActive", e.target.checked)}
+            aria-label="Active"
+          />
+          <div className="w-11 h-6 bg-surface2 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-onPrimary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-canvas after:border-hairline after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+          <span className="ml-3 text-xs tracking-widest uppercase text-ink">
+            {values.isActive ? "Published" : "Hidden"}
+          </span>
+        </label>
+      </div>
 
-      <div className="flex gap-3 pt-2">
-        <Button type="submit" loading={loading}>
-          {submitLabel}
-        </Button>
+      <div className="flex justify-end gap-6 pt-8 mt-4">
         <Link
           href={cancelHref}
-          className="inline-flex items-center justify-center rounded-md border border-hairline bg-surface2 px-4 py-2 text-ink font-medium hover:bg-surface3 min-h-[44px]"
+          className="inline-flex items-center justify-center border-b border-transparent text-xs tracking-widest uppercase text-muted hover:text-ink hover:border-ink transition-all min-h-[44px] px-2"
         >
           Cancel
         </Link>
+        <Button type="submit" loading={loading} className="px-10">
+          {submitLabel}
+        </Button>
       </div>
     </form>
   );

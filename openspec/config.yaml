@@ -1,0 +1,59 @@
+schema: spec-driven
+strict_tdd: true
+
+context: |
+  Tech stack: Next.js 16 (TypeScript), Tailwind CSS v4, Zustand, Zod, Serwist (PWA).
+  Architecture: App Router (inferred), React Server Components.
+  Testing: Vitest (Unit/Integration), Playwright (E2E).
+  Style: ESLint, Prettier.
+
+testing:
+  runner:
+    command: "pnpm exec vitest"
+    framework: "vitest"
+  layers:
+    unit:
+      available: true
+      tool: "vitest"
+    integration:
+      available: true
+      tool: "@testing-library/react"
+    e2e:
+      available: true
+      tool: "@playwright/test"
+  coverage:
+    available: true
+    command: "pnpm exec vitest run --coverage"
+  quality:
+    linter:
+      available: true
+      command: "pnpm run lint"
+    type_checker:
+      available: true
+      command: "pnpm exec tsc --noEmit"
+    formatter:
+      available: true
+      command: "pnpm exec prettier --check ."
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns
+    tdd: true
+    test_command: "pnpm exec vitest run"
+  verify:
+    test_command: "pnpm exec vitest run && pnpm exec playwright test"
+    build_command: "pnpm run build"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas

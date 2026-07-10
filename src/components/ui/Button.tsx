@@ -14,19 +14,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-primary text-onPrimary hover:opacity-90 active:opacity-80",
+    "border border-primary bg-primary text-onPrimary hover:bg-transparent hover:text-primary",
   secondary:
-    "bg-surface2 text-ink hover:bg-surface3 active:bg-surfaceHover border border-hairline",
+    "border border-hairline bg-transparent text-ink hover:border-primary hover:text-primary",
   danger:
-    "bg-danger text-onDanger hover:opacity-90 active:opacity-80",
+    "border border-danger bg-transparent text-danger hover:bg-danger hover:text-onDanger",
   ghost:
-    "bg-transparent text-ink hover:bg-surface1 active:bg-surface2",
+    "bg-transparent text-ink hover:text-primary",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "px-3 py-1.5 text-sm min-h-[44px] min-w-[44px]",
-  md: "px-4 py-2 text-base min-h-[44px] min-w-[44px]",
-  lg: "px-6 py-3 text-lg min-h-[44px] min-w-[44px]",
+  sm: "px-4 py-2 text-[10px] tracking-widest uppercase min-h-[44px] min-w-[44px]",
+  md: "px-6 py-3 text-xs tracking-widest uppercase min-h-[44px] min-w-[44px]",
+  lg: "px-8 py-4 text-sm tracking-widest uppercase min-h-[52px] min-w-[52px]",
 };
 
 export function Button({
@@ -46,7 +46,7 @@ export function Button({
       type={type}
       disabled={isDisabled}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+        "inline-flex items-center justify-center gap-2 rounded-none transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         variantStyles[variant],
         sizeStyles[size],

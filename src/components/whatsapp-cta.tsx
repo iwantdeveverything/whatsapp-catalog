@@ -14,6 +14,9 @@ export function WhatsAppCta({ product, defaultPhone }: WhatsAppCtaProps) {
   const productUrl =
     typeof window !== "undefined" ? window.location.href : undefined;
 
+  const baseClasses =
+    "inline-flex items-center gap-2 min-h-[44px] px-6 py-3 font-medium rounded-lg luxury:rounded-none transition-colors";
+
   if (contact.type === "whatsapp" && contact.value) {
     const waUrl = buildWhatsAppUrl(contact.value, product, productUrl);
     return (
@@ -21,7 +24,7 @@ export function WhatsAppCta({ product, defaultPhone }: WhatsAppCtaProps) {
         href={waUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 min-h-[44px] px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+        className={`${baseClasses} bg-green-600 hover:bg-green-700 text-white luxury:bg-ink luxury:hover:bg-ink/90 luxury:text-canvas`}
       >
         {/* WhatsApp icon (SVG) */}
         <svg
@@ -42,7 +45,7 @@ export function WhatsAppCta({ product, defaultPhone }: WhatsAppCtaProps) {
     return (
       <a
         href={`tel:${contact.value}`}
-        className="inline-flex items-center gap-2 min-h-[44px] px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+        className={`${baseClasses} bg-blue-600 hover:bg-blue-700 text-white luxury:bg-ink luxury:hover:bg-ink/90 luxury:text-canvas`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

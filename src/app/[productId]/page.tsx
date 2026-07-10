@@ -87,7 +87,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const jsonLd = generateProductJsonLd(product);
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-8">
+    <main className="max-w-6xl mx-auto px-4 py-8 luxury:py-16">
       {/* Breadcrumb */}
       <nav className="mb-6 text-sm text-muted">
         <Link href="/" className="hover:text-ink">
@@ -111,10 +111,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <span className="inline-block text-sm font-medium px-3 py-1 rounded-full bg-surface2 text-muted mb-3">
               {product.category}
             </span>
-            <h1 className="text-3xl font-bold text-ink">{product.name}</h1>
+            <h1 className="text-3xl font-bold text-ink luxury:font-serif luxury:text-4xl">{product.name}</h1>
           </div>
 
-          <p className="text-2xl font-bold text-accent">{priceStr}</p>
+          <p className="text-2xl font-bold text-accent luxury:font-light">{priceStr}</p>
 
           <p className="text-muted leading-relaxed">{product.description}</p>
 
